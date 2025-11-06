@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\services\ProductService;
+use App\Models\imagesProduct;
+use App\Models\ImagesProduct as ModelsImagesProduct;
 use App\Models\Product;
 use App\Models\ProductColor;
 use App\Models\ProductSize;
@@ -12,47 +15,35 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+
+    public function __construct(private ProductService $productService) {}
     public function createProduct(Request $request)
     {
 
-        if ($request->user()->role !== 'adm') {
-            return response()->json(['error' => 'Acesso não autorizado'], 403);
-        }
+        // if ($request->user()->role !== 'adm') {
+        //     return response()->json(['error' => 'Acesso não autorizado'], 403);
+        // }
 
         $validated = $request->validate([
             'name' => ['required', 'string'],
             'price' => ['required', 'numeric'],
-            'idCategory' => ['required', 'int'],
+            'description' => ['required', 'string'],
+            'idCategory' => ['required', 'integer'],
+            'lastPrice' => ['nullable', 'numeric'],
+            'images' => ['required', 'array'],
+            'colors' => ['required', 'array'],
+            'sizes' => ['required', 'array'],
 
         ]);
-        $product = new Product;
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->lastPrice = $request->lastPrice;
-        $product->fkCategory = $request->idCategory;
-        $product->news = $request->news;
-        $variation = $request->variation;
-        $product->save();
 
-        foreach ($variation as $productVariation) {
+        $product = $this->productService->createProduct($validated);
 
-            foreach ($productVariation['sizes'] as $size) {
-                $variations = new ProductVariacoes;
-                $variations->fkProduto = $product->id;
-                $variations->fkColor = $productVariation['colorId'];
-                $variations->image = $productVariation['imageUrl'];
-                $variations->fkSize = $size;
-                $variations->save();
-            }
-        }
-
-        return response()->json(['message' => "Produto cadastrado"], 201);
+        return response()->json(['message' => "Produto cadastrado", $product], 201);
     }
 
     public function fetchProduct()
     {
-        $products = Product::with(['category', 'variations.color', 'variations.size', 'variations'])->get();
+        $products = Product::with(['category',])->get();
 
         $result = $products->map(function ($product) {
             return [
@@ -62,21 +53,7 @@ class ProductController extends Controller
                 "lastPrice" => $product->lastPrice,
                 'description' => $product->description,
                 "category" => $product->category,
-                "image" => $product->variations->first()->image,
-                "variations" => $product->variations->map(function ($variation) {
-                    return [
-                        "id" => $variation->id,
-                        "image" => $variation->image,
-                        "color" => [
-                            "id" => $variation->color->id ?? null,
-                            "name" => $variation->color->name ?? null,
-                        ],
-                        "size" => [
-                            "id" => $variation->size->id ?? null,
-                            "name" => $variation->size->name ?? null,
-                        ],
-                    ];
-                }),
+                "image" => $product->images->first()->image,
             ];
         });
 
@@ -84,64 +61,26 @@ class ProductController extends Controller
         return response()->json($result);
     }
 
-    public function featuredProducts()
+
+    public function getProductByCategory($id)
     {
-        $product = Product::with(['variations'])->where('news', '=', '1')->get();
+        $products = $this->productService->getProductByCategory($id);
 
-        return $product->map(function ($product) {
-            return [
-                "id" => $product->id,
-                "name" => $product->name,
-                'category' => $product->category,
-                'price' => $product->price,
-                'lastPrice'  => $product->lastPrice,
-                "image" => $product->variations->first()->image,
-            ];
-        });
-
-        return response()->json($product);
+        if ($products->isEmpty()) {
+            return response()->json(['message' => "Nenhum Produto Encontrado"]);
+        }
+        return response()->json($products);
     }
 
     public function fetchProductId($id)
     {
-        $product = Product::with(['category', 'variations.color', 'variations.size'])->where('id', $id)->first();
-
-        $result = [
-
-            "id" => $product->id,
-            "name" => $product->name,
-            "price" => $product->price,
-            "lastPrice" => $product->lastPrice,
-            'category' => $product->category->name,
-            'description' => $product->description,
-            'variations' => $product->variations
-                ->groupBy(fn($variation) => $variation->color->id)
-                ->map(fn($variationsByColor) => [
-                    "image" => $variationsByColor->first()->image,
-                    "color" => [
-                        "id"   => $variationsByColor->first()->color->id,
-                        "name" => $variationsByColor->first()->color->name,
-                    ],
-                    "sizes" => $variationsByColor->map(fn($v) => [
-                        "id"   => $v->size->id,
-                        "name" => $v->size->name,
-                    ])->values(),
-                ])->values(),
-
-        ];
-
-
-        if (!$product) {
-            return response()->json(['error' => 'Produto não encontrado'], 404);
-        }
-
-        return response()->json($result);
+        $product = $this->productService->getProductById($id);
+        return response()->json($product);
     }
+
 
     public function recomendation($id)
     {
-
-
         $product = Product::with(['variations'])->where('id', '=', $id)->first();
 
         $category = $product->category->id;
@@ -177,11 +116,12 @@ class ProductController extends Controller
 
         return response()->json($result);
     }
+
     public function delProduct($id)
     {
         $product = Product::find($id);
 
-        if(!$product){
+        if (!$product) {
             return response()->json(['message' => "produto não existe"]);
         }
 

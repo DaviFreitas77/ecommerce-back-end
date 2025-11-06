@@ -19,15 +19,16 @@ Route::get('/products', [ProductController::class, 'fetchProduct']);
 Route::get('/categories', [CategoryController::class, 'fetchCategory']);
 Route::get('/colors', [ColorController::class, 'fetchColor']);
 Route::get('/sizes', [SizeController::class, 'fetchSize']);
-Route::get('/productFeatured', [ProductController::class, 'featuredProducts']);
+Route::get('/productsByCategory/{id}', [ProductController::class, 'getProductByCategory']);
 Route::get('/product/{id}', [ProductController::class, 'fetchProductId']);
+
 Route::get('/recomendatation/{id}', [ProductController::class, 'recomendation']);
 Route::delete('product/{id}', [ProductController::class, 'delProduct']);
 
 
-Route::prefix('adm')->middleware('auth:sanctum')->group(function () {
-    Route::post('/registerProduct', [ProductController::class, 'createProduct'])->middleware('auth:sanctum');
-});
+
+Route::post('/registerProduct', [ProductController::class, 'createProduct']);
+
 
 
 

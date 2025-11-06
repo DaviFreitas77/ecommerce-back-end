@@ -1,0 +1,97 @@
+<?php
+
+namespace App\Http\services;
+
+use App\Models\ImagesProduct;
+use App\Models\Product;
+use App\Models\ProductColor;
+use App\Models\ProductSize;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+class ProductService
+{
+    public function construct() {}
+
+
+    public function createProduct(array $products): Product
+    {
+        $product = new Product;
+        $product->name = $products['name'];
+        $product->description = $products['description'];
+        $product->price = $products['price'];
+        $product->lastPrice = $products['lastPrice'];
+        $product->fkCategory = $products['idCategory'];
+        $product->save();
+
+        foreach ($products['images'] as $images) {
+            $tableImages = new ImagesProduct();
+            $tableImages->idProduct = $product->id;
+            $tableImages->image = $images;
+            $tableImages->save();
+        }
+
+        foreach ($products['colors'] as $color) {
+            $tableColors = new ProductColor();
+            $tableColors->fkProduct = $product->id;
+            $tableColors->fkColor = $color;
+            $tableColors->save();
+        }
+
+        foreach ($products['sizes'] as $size) {
+            $tableSizes = new ProductSize();
+            $tableSizes->fkProduct = $product->id;
+            $tableSizes->fkSize = $size;
+            $tableSizes->save();
+        }
+        return $product;
+    }
+
+    public function getProductByCategory($id): Collection
+    {
+        $products = Product::with(['category',])->where('fkCategory', $id)->get();
+
+        $result = $products->map(function ($product) {
+            return [
+                "id" => $product->id,
+                "name" => $product->name,
+                "price" => $product->price,
+                "lastPrice" => $product->lastPrice,
+                'description' => $product->description,
+                "category" => $product->category,
+                "image" => $product->images->first()->image,
+            ];
+        });
+
+
+        return $result;
+    }
+
+
+    public function getProductById($id)
+    {
+        $product = Product::with(['category',])->where('id', $id)->first();
+
+        if (!$product) {
+            return response()->json(['error' => 'Produto não encontrado'], 404);
+        }
+
+        $result = [
+            "id" => $product->id,
+            "name" => $product->name,
+            "price" => $product->price,
+            "lastPrice" => $product->lastPrice,
+            'category' => $product->category->name,
+            'description' => $product->description,
+            "image" => $product->images->map(function ($image) {
+                return $image->image;
+            })
+
+        ];
+
+        return $result;
+    }
+}
