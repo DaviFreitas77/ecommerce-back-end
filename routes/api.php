@@ -29,9 +29,16 @@ Route::prefix('adm')->middleware('auth:sanctum')->group(function () {
     Route::post('/registerProduct', [ProductController::class, 'createProduct'])->middleware('auth:sanctum');
 });
 
+
+
+Route::middleware('auth:sanctum')->get('/auth/me', function (Request $request) {
+    return response()->json($request->user());
+});
+
 Route::prefix('auth')->group(function () {
     Route::post('/register', [UserController::class, 'createUser']);
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
     Route::post('/loginGoogle',[UserController::class,'LoginGoogle']);
+
 });

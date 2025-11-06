@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\services\userService;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,6 +16,8 @@ use PhpParser\Node\Stmt\Return_;
 
 class UserController extends Controller
 {
+
+    public function __construct(private userService $userService) {}
     public function createUser(Request $request)
     {
         $validated = $request->validate([
@@ -28,24 +31,21 @@ class UserController extends Controller
             "email.unique" => "email ja vinculado a uma conta!",
         ]);
 
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->role = "user";
-        $user->save();
+        $user = $this->userService->registerUser($validated['email'], $validated['password'], $validated['name']);
 
         Auth::login($user);
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $request->session()->regenerate();
 
         return response()->json([
-            "message" => "conta criada com sucesso,redirecionando...",
-            'token' => $token,
-            'token_type' => 'Bearer',
+            "message" => "conta criada com sucesso",
             'user' => $user,
-        ], 201);
+        ]);
     }
 
+    public function me(Request $request)
+    {
+        return response()->json($request->user());
+    }
 
 
 
@@ -62,17 +62,10 @@ class UserController extends Controller
         }
 
 
-        if (!Auth::attempt($credentials)) {
-            abort(401, "credenciais invalidas");
-        }
-
-        $user = $request->user();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $user = $this->userService->loginUser($credentials);
 
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+            "message" => "login efetuado com sucesso",
             'user' => $user,
         ]);
     }
