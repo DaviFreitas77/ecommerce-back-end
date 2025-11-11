@@ -62,14 +62,15 @@ class ProductService
                 "lastPrice" => $product->lastPrice,
                 'description' => $product->description,
                 "category" => $product->category,
-                "image" => $product->images->first()->image,
+                'sizes' => $product->sizes->pluck('name'),
+                'color' => $product->colors->pluck('name'),
+                "image" => $product->images->pluck('image'),
             ];
         });
 
 
         return $result;
     }
-
 
     public function getProductById($id)
     {
@@ -84,10 +85,25 @@ class ProductService
             "name" => $product->name,
             "price" => $product->price,
             "lastPrice" => $product->lastPrice,
-            'category' => $product->category->name,
+            'category' => $product->category->id,
+            'sizes' => $product->sizes->map(function ($size) {
+                return [
+                    'id' => $size->id,
+                    'name' => $size->name
+                ];
+            }),
+            'color' => $product->colors->map(function ($color) {
+                return [
+                    'id' => $color->id,
+                    'name' => $color->name
+                ];
+            }),
             'description' => $product->description,
             "image" => $product->images->map(function ($image) {
-                return $image->image;
+                return [
+                    'id' => $image->id,
+                    'image' => $image->image
+                ];
             })
 
         ];

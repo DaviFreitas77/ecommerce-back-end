@@ -3,6 +3,8 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductShoppingController;
+use App\Http\Controllers\shoppingCartController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -21,14 +23,16 @@ Route::get('/colors', [ColorController::class, 'fetchColor']);
 Route::get('/sizes', [SizeController::class, 'fetchSize']);
 Route::get('/productsByCategory/{id}', [ProductController::class, 'getProductByCategory']);
 Route::get('/product/{id}', [ProductController::class, 'fetchProductId']);
-
 Route::get('/recomendatation/{id}', [ProductController::class, 'recomendation']);
 Route::delete('product/{id}', [ProductController::class, 'delProduct']);
-
-
-
 Route::post('/registerProduct', [ProductController::class, 'createProduct']);
 
+
+Route::prefix('shoppingCart')->group(function(){
+    Route::post('/add', [ProductShoppingController::class, 'addCart']);
+    Route::post('/sync', [ProductShoppingController::class, 'syncCart']);
+    Route::get('/getCart', [ProductShoppingController::class, 'getCart']);    
+})->middleware('auth:sanctum');
 
 
 

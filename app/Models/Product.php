@@ -19,4 +19,27 @@ class Product extends Model
     {
         return $this->hasMany(ImagesProduct::class, 'idProduct');
     }
+
+    public function sizes()
+    {
+        return $this->hasManyThrough(
+            Size::class,         // Modelo final 
+            ProductSize::class,  // Modelo intermediário
+            'fkProduct',         // FK no ProductSize que referencia Product
+            'id',                // PK no Size
+            'id',                // PK no Product
+            'fkSize'             // FK no ProductSize que referencia Size
+        );
+    }
+    public function Colors()
+    {
+        return $this->hasManyThrough(
+            Colors::class,         // Modelo final 
+            ProductColor::class,  // Modelo intermediário
+            'fkProduct',         // FK no ProductSize que referencia Product
+            'id',                // PK no Size
+            'id',                // PK no Product
+            'fkColor'             // FK no ProductSize que referencia Size
+        );
+    }
 }
