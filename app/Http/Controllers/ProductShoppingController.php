@@ -67,11 +67,8 @@ class ProductShoppingController extends Controller
     public function syncCart(Request $request)
     {
         $validated = $request->validate([
-            'products' => ['present', 'array'],
-            'products.*.id' => ['required', 'integer', 'exists:products,id'],
-            'products.*.size' => ['nullable', 'integer'],
-            'products.*.color' => ['nullable', 'integer'],
-            'products.*.quantity' => ['required', 'integer', 'min:1'],
+            'products' => ['array'],
+           
         ]);
 
         $idUser = Auth::user()->id;
@@ -148,12 +145,13 @@ class ProductShoppingController extends Controller
                     });
             })
             ->select(
-                'product_shopping_cart.id as cart_item_id',
                 'product_shopping_cart.quantity',
-                'products.id as product_id',
+                'products.id as id',
                 'products.name as name',
                 'products.price',
                 'colors.name as colorName',
+                'colors.id as color',
+                'sizes.id as size',
                 'sizes.name as sizeName',
                 'images_products.image'
             )

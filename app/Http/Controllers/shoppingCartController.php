@@ -22,4 +22,17 @@ class shoppingCartController extends Controller
 
         return $existingCart->id;
     }
+
+
+    public function shoppingCart()
+    {
+
+        $idUser = Auth::user()->id;
+        $shoppingCart = ShoppingCart::where('fkUser', $idUser)->first();
+
+        if (!$shoppingCart) {
+            return response()->json(['message' => "carrinnho não encontrado"], 400);
+        }
+        return response()->json($shoppingCart);
+    }
 }

@@ -9,4 +9,7 @@ class ShoppingCart extends Model
     protected $table = 'shopping_cart';
     protected $fillable = ["fkUser","totalPrice"];
     public $timestamps = false;
+
+
+   
 }

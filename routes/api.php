@@ -32,6 +32,8 @@ Route::prefix('shoppingCart')->group(function(){
     Route::post('/add', [ProductShoppingController::class, 'addCart']);
     Route::post('/sync', [ProductShoppingController::class, 'syncCart']);
     Route::get('/getCart', [ProductShoppingController::class, 'getCart']);    
+    Route::get('/getShoppingCart', [shoppingCartController::class, 'shoppingCart']);
+
 })->middleware('auth:sanctum');
 
 
