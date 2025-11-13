@@ -25,7 +25,9 @@ Route::get('/productsByCategory/{id}', [ProductController::class, 'getProductByC
 Route::get('/product/{id}', [ProductController::class, 'fetchProductId']);
 Route::get('/recomendatation/{id}', [ProductController::class, 'recomendation']);
 Route::delete('product/{id}', [ProductController::class, 'delProduct']);
+Route::get('/search/{search}', [ProductController::class, 'searchProduct']);
 Route::post('/registerProduct', [ProductController::class, 'createProduct']);
+
 
 
 Route::prefix('shoppingCart')->group(function(){
