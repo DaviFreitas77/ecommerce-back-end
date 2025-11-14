@@ -6,7 +6,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductShoppingController;
 use App\Http\Controllers\shoppingCartController;
 use App\Http\Controllers\SizeController;
+use App\Http\Controllers\stripeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ZIPCodeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -51,3 +53,7 @@ Route::prefix('auth')->group(function () {
     Route::post('/loginGoogle',[UserController::class,'LoginGoogle']);
 
 });
+
+Route::post('/checkZipCode', [ZIPCodeController::class, 'CheckZipCode']);
+Route::post('/createPayment', [stripeController::class, 'createPayment'])->middleware('auth:sanctum');
+
