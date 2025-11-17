@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductShoppingCart;
 use App\Models\ShoppingCart;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -68,9 +69,12 @@ class ProductShoppingController extends Controller
     {
         $validated = $request->validate([
             'products' => ['array'],
-           
+
         ]);
 
+        if (empty($validated['products'])) {
+            return;
+        }
         $idUser = Auth::user()->id;
         $shoppingCart = ShoppingCart::where('fkUser', $idUser)->first();
 
@@ -140,7 +144,7 @@ class ProductShoppingController extends Controller
                         $query->select('id')
                             ->from('images_products as ip')
                             ->whereColumn('ip.idProduct', 'products.id')
-                            ->orderBy('ip.id') 
+                            ->orderBy('ip.id')
                             ->limit(1);
                     });
             })

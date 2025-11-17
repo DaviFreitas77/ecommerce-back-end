@@ -130,14 +130,15 @@ class ProductController extends Controller
         return response()->json(['message' => "produto deletado"]);
     }
 
-    public function searchProduct($search){
+    public function searchProduct($search)
+    {
         $products = Product::where('name', 'like', '%' . $search . '%')
-        ->orWhereHas('category', function($query) use ($search){
-            $query->where('name', 'like', '%' . $search . '%');
-        })
-        ->with(['category','sizes','images'])->get();
+            ->orWhereHas('category', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->with(['category', 'sizes', 'images'])->get();
 
-         $result = $products->map(function ($product) {
+        $result = $products->map(function ($product) {
             return [
                 "id" => $product->id,
                 "name" => $product->name,
@@ -146,10 +147,13 @@ class ProductController extends Controller
                 'description' => $product->description,
                 "category" => $product->category,
                 "image" => $product->images->pluck('image'),
-                  "sizes" => $product->sizes->pluck('name'), 
+                "sizes" => $product->sizes->pluck('name'),
             ];
         });
 
         return response()->json($result);
     }
+
+
+    
 }

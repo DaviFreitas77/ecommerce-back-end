@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\orderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductShoppingController;
 use App\Http\Controllers\shoppingCartController;
@@ -32,6 +33,7 @@ Route::post('/registerProduct', [ProductController::class, 'createProduct']);
 
 
 
+
 Route::prefix('shoppingCart')->group(function(){
     Route::post('/add', [ProductShoppingController::class, 'addCart']);
     Route::post('/sync', [ProductShoppingController::class, 'syncCart']);
@@ -56,4 +58,6 @@ Route::prefix('auth')->group(function () {
 
 Route::post('/checkZipCode', [ZIPCodeController::class, 'CheckZipCode']);
 Route::post('/createPayment', [stripeController::class, 'createPayment'])->middleware('auth:sanctum');
+
+Route::post('/changeStatus', [orderController::class, 'changeOrderStatus'])->middleware('auth:sanctum');
 

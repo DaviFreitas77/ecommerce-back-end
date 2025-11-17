@@ -110,4 +110,20 @@ class ProductService
 
         return $result;
     }
+
+    public function fethPricesProduct(array $products)
+    {
+        $priceItems = [];
+
+        foreach ($products as $item) {
+            $product = Product::find($item['id']);
+            if ($product) {
+                $totalItemPrice = $product->price * $item['quantity'];
+                $priceItems[] = $totalItemPrice;
+            }
+        }
+        $sumPrice = array_sum($priceItems);
+
+        return $sumPrice;
+    }
 }

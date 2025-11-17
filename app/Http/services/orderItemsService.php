@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Http\services;
+
+use App\Models\Order;
+use App\Models\OrderItems;
+use App\Models\Product;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+class OrderItemsService
+{
+    public function construct() {}
+
+    public function create(array $products, int $userId, int $idOrder)
+    {
+
+        foreach ($products as $item) {
+            $product = Product::find($item['id']);
+            if ($product) {
+                $newOrderItems = OrderItems::create([
+                    'fk_product' => $item['id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $product->price,
+                    'total' => $product->price * $item['quantity'],
+                    'fk_order' => $idOrder,
+
+                ]);
+                $newOrderItems->save();
+            }
+
+        }
+    }
+}
