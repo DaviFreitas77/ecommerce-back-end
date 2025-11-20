@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\MCPController;
 use App\Http\Controllers\orderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductShoppingController;
@@ -60,4 +61,7 @@ Route::post('/checkZipCode', [ZIPCodeController::class, 'CheckZipCode']);
 Route::post('/createPayment', [stripeController::class, 'createPayment'])->middleware('auth:sanctum');
 
 Route::post('/changeStatus', [orderController::class, 'changeOrderStatus'])->middleware('auth:sanctum');
+Route::post('/createPreference',[MCPController::class, 'createPreference']);
+Route::post('/proccessPayment',[MCPController::class, 'proccessPayment']);
+Route::post('/proccessPaymentPix',[MCPController::class, 'proccessPaymentPix']);
 

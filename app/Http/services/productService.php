@@ -23,7 +23,7 @@ class ProductService
         $product->name = $products['name'];
         $product->description = $products['description'];
         $product->price = $products['price'];
-        $product->lastPrice = $products['lastPrice'];
+        $product->lastPrice = $products['lastPrice'] ?? null;
         $product->fkCategory = $products['idCategory'];
         $product->save();
 

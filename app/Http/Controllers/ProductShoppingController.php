@@ -72,9 +72,7 @@ class ProductShoppingController extends Controller
 
         ]);
 
-        if (empty($validated['products'])) {
-            return;
-        }
+       
         $idUser = Auth::user()->id;
         $shoppingCart = ShoppingCart::where('fkUser', $idUser)->first();
 
