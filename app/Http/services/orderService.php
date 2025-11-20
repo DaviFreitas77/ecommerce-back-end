@@ -11,13 +11,13 @@ class OrderService
 {
     public function construct() {}
 
-    public function create(int $idUser, string $status = 'pending', string $paymentMethod, float $total = 0)
+    public function create(int $idUser, string $status = 'pending', float $total = 0)
     {
         $newOder = new Order;
         $newOder->number_order = rand(10000, 99999);
         $newOder->fk_user = $idUser;
         $newOder->status = $status;
-        $newOder->payment_method = $paymentMethod;
+        $newOder->payment_method = 'mudar';
         $newOder->total = $total;
         $newOder->save();
         return $newOder;

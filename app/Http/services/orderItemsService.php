@@ -13,7 +13,7 @@ class OrderItemsService
 {
     public function construct() {}
 
-    public function create(array $products, int $userId, int $idOrder)
+    public function create(array $products, int $idOrder)
     {
 
         foreach ($products as $item) {
