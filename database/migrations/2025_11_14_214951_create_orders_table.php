@@ -19,10 +19,12 @@ return new class extends Migration
                 'pending',
                 'processing',
                 'completed',
-                'canceled'
+                'canceled',
+                'preparando',
+                'entregue',
             ])->default('pending');
             $table->decimal('total', 10, 2);
-            $table->string('payment_method');
+            $table->string('payment_method')->nullable();
             $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();

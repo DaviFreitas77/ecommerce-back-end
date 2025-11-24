@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\services\ShoppingCartService;
 use App\Models\ProductShoppingCart;
 use App\Models\ShoppingCart;
 use Illuminate\Http\Request;
@@ -9,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class shoppingCartController extends Controller
 {
+
+     public function __construct(private ShoppingCartService $shoppingCartService) {
+    }
+
     public function createShoppingCart($iduser)
     {
         $existingCart = ShoppingCart::where('fkUser', $iduser)->first();
@@ -69,4 +74,11 @@ class shoppingCartController extends Controller
 
         ]);
     }
+
+    public function deleteShoppingCart($idUser)
+    {
+        $this->shoppingCartService->deleteCartUser($idUser);
+        return response()->json(['message' => 'carrinho deletado']);
+    }
+
 }

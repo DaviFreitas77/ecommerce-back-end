@@ -11,8 +11,20 @@ class orderController extends Controller
     public function __construct(private OrderService $orderService) {
     }
 
-   public function changeOrderStatus(Request $request){
-        $changeStatus = $this->orderService->changeOrderStatus();
+   public function changeOrderStatus($status){
+        $changeStatus = $this->orderService->changeOrderStatus($status);
         return response()->json($changeStatus);
    }
+
+   
+   public function changePaymentMethod ($method,$idOrder){
+     $changePayment = $this->orderService->updatePaymentOrderService($method,$idOrder);
+     return response()->json($changePayment);
+   }
+
+   public function latestOrder(){
+    $latestOrder = $this->orderService->fetchLatestOrder();
+    return response()->json($latestOrder);
+
+}
 }
