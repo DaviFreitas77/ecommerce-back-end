@@ -43,7 +43,7 @@ class ProductController extends Controller
 
     public function fetchProduct()
     {
-        $products = Product::with(['category',])->get();
+        $products = Product::with(['category'])->get();
 
         $result = $products->map(function ($product) {
             return [
@@ -53,7 +53,9 @@ class ProductController extends Controller
                 "lastPrice" => $product->lastPrice,
                 'description' => $product->description,
                 "category" => $product->category,
-                "image" => $product->images->first()->image,
+                "image" => $product->images->pluck('image'),
+                'sizes' => $product->sizes->pluck('name'),
+                'color' => $product->colors->pluck('name'),
             ];
         });
 
@@ -148,12 +150,10 @@ class ProductController extends Controller
                 "category" => $product->category,
                 "image" => $product->images->pluck('image'),
                 "sizes" => $product->sizes->pluck('name'),
+                "color" => $product->colors->pluck('name'),
             ];
         });
 
         return response()->json($result);
     }
-
-
-    
 }

@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use HasFactory;
     protected $table = 'products';
     protected $fillable = ["name", "description", "price", "lastPrice", "fkCategory"];
     public $timestamps = false;
@@ -22,24 +24,23 @@ class Product extends Model
 
     public function sizes()
     {
-        return $this->hasManyThrough(
-            Size::class,         // Modelo final 
-            ProductSize::class,  // Modelo intermediário
-            'fkProduct',         // FK no ProductSize que referencia Product
-            'id',                // PK no Size
-            'id',                // PK no Product
-            'fkSize'             // FK no ProductSize que referencia Size
+        return $this->belongsToMany(
+            Size::class,      // Modelo relacionado
+            'product_sizes',  // Tabela pivot
+            'fkProduct',      // FK deste model na pivot
+            'fkSize'          // FK do outro model na pivot
         );
     }
-    public function Colors()
+
+    public function colors()
     {
-        return $this->hasManyThrough(
-            Colors::class,         // Modelo final 
-            ProductColor::class,  // Modelo intermediário
-            'fkProduct',         // FK no ProductSize que referencia Product
-            'id',                // PK no Size
-            'id',                // PK no Product
-            'fkColor'             // FK no ProductSize que referencia Size
+        return $this->belongsToMany(
+            Colors::class,
+            'product_colors',
+            'fkProduct',
+            'fkColor'
         );
     }
+
+  
 }
