@@ -1,12 +1,8 @@
 <?php
 
 namespace App\Http\Services;
-
-use App\Models\Order;
 use App\Models\ShoppingCart;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+
 
 class ShoppingCartService
 {

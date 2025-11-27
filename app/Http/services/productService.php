@@ -6,11 +6,8 @@ use App\Models\ImagesProduct;
 use App\Models\Product;
 use App\Models\ProductColor;
 use App\Models\ProductSize;
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+
 
 class ProductService
 {

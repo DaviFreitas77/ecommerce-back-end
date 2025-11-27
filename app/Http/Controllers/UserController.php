@@ -7,12 +7,10 @@ use App\Http\Services\userService;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 use Firebase\JWT\JWK;
-use PhpParser\Node\Stmt\Return_;
+
 
 class UserController extends Controller
 {
