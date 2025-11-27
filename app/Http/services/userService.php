@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class userService
+class UserService
 {
-  public function construct() {}
+
 
 
   public function registerUser($email, $password, $name)

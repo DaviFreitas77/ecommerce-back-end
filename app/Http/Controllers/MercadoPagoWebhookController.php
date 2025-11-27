@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Http\Controllers;
 use App\Http\Services\OrderService;
 use Illuminate\Http\Request;
 use MercadoPago\MercadoPagoConfig;

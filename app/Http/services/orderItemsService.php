@@ -9,7 +9,7 @@ use App\Models\Product;
 
 class OrderItemsService
 {
-    public function construct() {}
+
 
     public function create(array $products, int $idOrder)
     {

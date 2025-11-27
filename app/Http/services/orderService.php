@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class OrderService
 {
-    public function construct() {}
 
     public function create(int $idUser, string $status = 'pending', float $total = 0)
     {
