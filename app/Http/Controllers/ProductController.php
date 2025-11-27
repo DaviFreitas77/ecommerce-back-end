@@ -3,14 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\ProductService;
-use App\Models\imagesProduct;
-use App\Models\ImagesProduct as ModelsImagesProduct;
 use App\Models\Product;
-use App\Models\ProductColor;
-use App\Models\ProductSize;
-use App\Models\ProductVariacoes;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 
 class ProductController extends Controller

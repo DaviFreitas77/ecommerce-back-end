@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Hash;
 
 class ProductService
 {
-    public function construct() {}
-
 
     public function createProduct(array $products): Product
     {
