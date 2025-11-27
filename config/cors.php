@@ -15,13 +15,13 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie','login','register','logout'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://bazar-nlci.vercel.app'],
+    'allowed_origins' => ['https://bazar-nlci.vercel.app','http://localhost:5173'],
 
-    'allowed_origins_patterns' => ['https://bazar-nlci.vercel.app'],
+    'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
 

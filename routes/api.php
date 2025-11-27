@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\logradouroController;
 use App\Http\Controllers\MCPController;
+use App\Http\Controllers\MercadoPagoWebhookController;
 use App\Http\Controllers\orderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductShoppingController;
@@ -46,15 +47,6 @@ Route::prefix('shoppingCart')->group(function () {
     Route::get('/getShoppingCart', [shoppingCartController::class, 'shoppingCart']);
 })->middleware('auth:sanctum');
 
-
-
-
-Route::prefix('auth')->group(function () {
-    Route::post('/register', [UserController::class, 'createUser']);
-    Route::post('/login', [UserController::class, 'login']);
-    Route::post('/logout', [UserController::class, 'logout']);
-    Route::post('/loginGoogle', [UserController::class, 'LoginGoogle']);
-});
 
 Route::prefix('mcp')->group(function () {
     Route::post('/createPreference', [MCPController::class, 'createPreference']);

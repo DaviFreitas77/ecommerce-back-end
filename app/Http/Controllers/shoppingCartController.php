@@ -11,6 +11,7 @@ class shoppingCartController extends Controller
 {
 
      public function __construct(private ShoppingCartService $shoppingCartService) {
+        $this->shoppingCartService = $shoppingCartService;
     }
 
     public function createShoppingCart($iduser)
