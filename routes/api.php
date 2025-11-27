@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\logradouroController;
 use App\Http\Controllers\MCPController;
 use App\Http\Controllers\orderController;
 use App\Http\Controllers\ProductController;
@@ -18,12 +19,11 @@ Route::middleware('auth:sanctum')->get('/auth/me', function (Request $request) {
     return response()->json($request->user());
 });
 
-Route::prefix('prod')->group(function(){
+Route::prefix('prod')->group(function () {
     Route::get('/productsByCategory/{id}', [ProductController::class, 'getProductByCategory']);
     Route::get('/product/{id}', [ProductController::class, 'fetchProductId']);
     Route::get('/products', [ProductController::class, 'fetchProduct']);
     Route::get('/search/{search}', [ProductController::class, 'searchProduct']);
-
 });
 
 //adm
@@ -63,10 +63,13 @@ Route::prefix('mcp')->group(function () {
     Route::post('/webhook', [MercadoPagoWebhookController::class, 'handle']);
 })->middleware('auth:sanctum');
 
-Route::prefix('checkout')->group(function(){
-    Route::post('/checkZipCode', [ZIPCodeController::class, 'CheckZipCode']);
 
-});
+Route::prefix('checkout')->group(function () {
+    Route::post('/checkZipCode', [ZIPCodeController::class, 'CheckZipCode']);
+    Route::post('/logradouro', [logradouroController::class,'createLogradouro']);
+    Route::get('/logradouroUser', [logradouroController::class,'fetchLogradouro']);
+})->middleware('auth:sanctum');
+
 
 
 Route::post('/changeStatus', [orderController::class, 'changeOrderStatus'])->middleware('auth:sanctum');

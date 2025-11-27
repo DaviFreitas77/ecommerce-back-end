@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\services\OrderItemsService;
-use App\Http\services\OrderService;
-use App\Http\services\ProductService;
-use App\Http\services\ShoppingCartService;
+use App\Http\Services\OrderItemsService;
+use App\Http\Services\OrderService;
+use App\Http\Services\ProductService;
+use App\Http\Services\ShoppingCartService;
 use App\Models\Order;
 use App\Models\OrderItems;
 use App\Models\Product;
@@ -129,13 +129,9 @@ class MCPController extends Controller
                 $this->orderService->changeOrderStatus('preparando');
                 $this->orderService->updatePaymentOrderService($payment->payment_type_id, $payment->external_reference);
                 $this->shoppingCartService->deleteCartUser(Auth::user()->id);
-                
-            }elseif($payment->status === "in_process"){
+            } elseif ($payment->status === "in_process") {
                 $this->orderService->changeOrderStatus('processando');
-
-            }
-        
-            else {
+            } else {
                 return response()->json($payment);
             }
             return response()->json($payment);
@@ -146,21 +142,23 @@ class MCPController extends Controller
 
     public function proccessPaymentPix(Request $request)
     {
+        try {
+            $data = $request->all();
+            $client = new PaymentClient();
+            $request_options = new RequestOptions();
+           
 
-        $data = $request->all();
+            $payment = $client->create([
+                "transaction_amount" => (float) $data['transaction_amount'],
+                "payment_method_id" => $data['payment_method_id'],
+                "payer" => [
+                    "email" => $data['payer']['email'],
+                ]
+            ], $request_options);
 
-        $client = new PaymentClient();
-        $request_options = new RequestOptions();
-        $request_options->setCustomHeaders(["X-Idempotency-Key: <SOME_UNIQUE_VALUE>"]);
-
-        $payment = $client->create([
-            "transaction_amount" => (float) $data['transaction_amount'],
-            "payment_method_id" => $data['payment_method_id'],
-            "payer" => [
-                "email" => $data['payer']['email'],
-            ]
-        ], $request_options);
-
-        return response()->json($payment);
+            return response()->json($payment);
+        } catch (ErrorException $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 }

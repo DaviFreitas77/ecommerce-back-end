@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\services\OrderService;
+use App\Http\Services\OrderService;
 use Illuminate\Http\Request;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Payment\PaymentClient;

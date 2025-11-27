@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\services\OrderItemsService;
-use App\Http\services\OrderService;
-use App\Http\services\ProductService;
+use App\Http\Services\OrderItemsService;
+use App\Http\Services\OrderService;
+use App\Http\Services\ProductService;
 use App\Models\Order;
 use App\Models\orderItems;
 use App\Models\Product;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\services\ProductService;
+use App\Http\Services\ProductService;
 use App\Models\imagesProduct;
 use App\Models\ImagesProduct as ModelsImagesProduct;
 use App\Models\Product;

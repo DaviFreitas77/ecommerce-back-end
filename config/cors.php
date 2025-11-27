@@ -19,9 +19,9 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173'],
+    'allowed_origins' => ['https://bazar-nlci.vercel.app'],
 
-    'allowed_origins_patterns' => ['http://localhost:5173'],
+    'allowed_origins_patterns' => ['https://bazar-nlci.vercel.app'],
 
     'allowed_headers' => ['*'],
 

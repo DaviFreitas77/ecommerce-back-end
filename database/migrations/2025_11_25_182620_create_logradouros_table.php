@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('tb_logradouro', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('fk_user');
-            $table->string('name');
             $table->string('type');
             $table->string('zip_code');
             $table->string('district');
