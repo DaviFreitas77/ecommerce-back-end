@@ -2,12 +2,10 @@
 
 namespace App\Http\Services;
 
-use App\Models\Order;
+
 use App\Models\OrderItems;
 use App\Models\Product;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+
 
 class OrderItemsService
 {
