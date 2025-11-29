@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://bazar-nlci.vercel.app','http://localhost:5173'],
+    'allowed_origins' => [env('SANCTUM_FRONTEND_URL')],
 
     'allowed_origins_patterns' => [],
 
