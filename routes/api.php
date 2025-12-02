@@ -20,6 +20,17 @@ Route::middleware('auth:sanctum')->get('/auth/me', function (Request $request) {
     return response()->json($request->user());
 });
 
+
+
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [UserController::class, 'createUser']);
+    Route::post('/login', [UserController::class, 'login']);
+    Route::post('/logout', [UserController::class, 'logout']);
+    Route::post('/loginGoogle', [UserController::class, 'LoginGoogle']);
+});
+
+
+
 Route::prefix('prod')->group(function () {
     Route::get('/productsByCategory/{id}', [ProductController::class, 'getProductByCategory']);
     Route::get('/product/{id}', [ProductController::class, 'fetchProductId']);
