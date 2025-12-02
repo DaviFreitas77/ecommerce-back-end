@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\userService;
+use App\Http\Services\UserService;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ use Firebase\JWT\JWK;
 class UserController extends Controller
 {
 
-    public function __construct(private userService $userService) {}
+    public function __construct(private UserService $userService) {}
     public function createUser(Request $request)
     {
         $validated = $request->validate([
