@@ -18,12 +18,11 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->unsignedInteger('fk_order');
             $table->decimal('total', 10, 2);
-            $table->enum('status', [
-                'pending',
-                'processing',
-                'completed',
-                'canceled'
-            ])->default('pending');
+            $table->unsignedInteger('fk_color');
+            $table->unsignedInteger('fk_size');
+
+            $table->foreign('fk_color')->references('id')->on('colors')->onDelete('cascade');
+            $table->foreign('fk_size')->references('id')->on('sizes')->onDelete('cascade');
             $table->foreign('fk_product')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('fk_order')->references('id')->on('tb_order')->onDelete('cascade');
         });

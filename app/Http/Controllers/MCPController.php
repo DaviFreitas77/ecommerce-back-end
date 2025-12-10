@@ -2,93 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Services\OrderItemsService;
+use App\Http\Services\MCPService;
 use App\Http\Services\OrderService;
-use App\Http\Services\ProductService;
 use App\Http\Services\ShoppingCartService;
-use App\Models\Order;
-use App\Models\OrderItems;
-use App\Models\Product;
 use ErrorException;
 use MercadoPago\MercadoPagoConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
-use MercadoPago\Client\Preference\PreferenceClient;
+
 
 MercadoPagoConfig::setAccessToken(env('MERCADO_PAGO_ACCESS_TOKEN'));
 
 class MCPController extends Controller
 {
-    public function __construct(private ProductService $productService, private OrderService $orderService, private OrderItemsService $orderItemsService, private ShoppingCartService $shoppingCartService) {}
+    public function __construct(private OrderService $orderService, private ShoppingCartService $shoppingCartService, private MCPService $mcpService) {}
 
-    public function createPreference(Request $request)
+    public function createPreference($items, $sumPrice, $orderId)
     {
-        $validated = $request->validate([
-            'items' => ['required', 'array'],
-        ]);
-
-        $userId = Auth::user()->id;
-
-        $sumPrice = $this->productService->fethPricesProduct($validated['items']);
-
-        $existingOrder = Order::where('fk_user', $userId)->where('status', 'pending')->first();
-
-        if ($existingOrder) {
-            $orderItems = OrderItems::where('fk_order', $existingOrder->id);
-
-            if ($orderItems) {
-                $orderItems->delete();
-            }
-
-
-            $newOrderItems = $this->orderItemsService->create($validated['items'], $existingOrder->id);
-
-
-            $existingOrder->total = $sumPrice;
-            $existingOrder->save();
-            $orderId = $existingOrder->id;
-        } else {
-            //cria um novo pedido
-            $newOder = $this->orderService->create($userId, 'pending', $sumPrice);
-            $orderId = $newOder->id;
-
-            $newOrderItems = $this->orderItemsService->create($validated['items'], $newOder->id);
-        }
-
-
-        $mpItems = array_map(function ($item) {
-            $product = Product::find($item['id']);
-            if (!$product) {
-                throw new \Exception("Produto não encontrado: ID {$item['id']}");
-            }
-
-            return [
-                "title" => $item['name'],
-                "quantity" => max(1, (int)$item['quantity']),
-                "unit_price" => (float)$product->price,
-            ];
-        }, $validated['items']);
-
-        try {
-            $client = new PreferenceClient();
-            $preference = $client->create([
-                "items" => $mpItems,
-
-            ]);
-
-            return response()->json([
-                "id" => $preference->id,
-                "url" => $preference->init_point,
-                "total" => $sumPrice,
-                "order" => $orderId
-
-
-            ]);
-        } catch (ErrorException $e) {
-            return response()->json(['error' => $e->getMessage()]);
-        }
+        $newPreference = $this->mcpService->createPreferenceService($items, $sumPrice, $orderId);
+        return $newPreference;
     }
     public function proccessPayment(Request $request)
     {
@@ -146,7 +80,7 @@ class MCPController extends Controller
             $data = $request->all();
             $client = new PaymentClient();
             $request_options = new RequestOptions();
-           
+
 
             $payment = $client->create([
                 "transaction_amount" => (float) $data['transaction_amount'],

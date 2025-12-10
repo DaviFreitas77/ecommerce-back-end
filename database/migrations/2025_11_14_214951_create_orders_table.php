@@ -25,9 +25,10 @@ return new class extends Migration
             ])->default('pending');
             $table->decimal('total', 10, 2);
             $table->string('payment_method')->nullable();
+            $table->unsignedInteger('fk_cupom')->nullable();
+            $table->timestamp('created_at')->useCurrent();
             $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');
-
-            $table->timestamps();
+            $table->foreign('fk_cupom')->references('id')->on('discount_cupoms')->onDelete('set null');
         });
     }
 

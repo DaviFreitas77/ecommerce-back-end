@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\ShoppingCartService;
 use App\Models\Product;
 use App\Models\ProductShoppingCart;
 use App\Models\ShoppingCart;
@@ -12,6 +13,9 @@ use Illuminate\Support\Facades\DB;
 
 class ProductShoppingController extends Controller
 {
+    public function __construct(private ShoppingCartService $shoppingCartService) {
+        $this->shoppingCartService = $shoppingCartService;
+    }
     public function addCart(Request $request)
     {
         $validated = $request->validate([
@@ -24,7 +28,7 @@ class ProductShoppingController extends Controller
         $idUser = Auth::user()->id;
 
         //verifica se o carrinho ja existe,se não,cria um e retorna o id
-        $shoppingCtrl = new ShoppingCartController();
+        $shoppingCtrl = new ShoppingCartController($this->shoppingCartService);
         $cartId = $shoppingCtrl->createShoppingCart($idUser);
 
         $shoppingCart = ShoppingCart::find($cartId);

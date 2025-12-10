@@ -32,7 +32,7 @@ class OrderService
     }
 
 
-    public function updatePaymentOrderService($method,$idOrder)
+    public function updatePaymentOrderService($method, $idOrder)
     {
         $idUser = Auth::user()->id;
         $order = Order::where('fk_user', $idUser)->where('id', $idOrder)->first();
@@ -44,12 +44,19 @@ class OrderService
         return $order;
     }
 
+    
 
-    public function fetchLatestOrder(){
+    public function fetchLatestOrder()
+    {
         $idUser = Auth::user()->id;
         $orders = Order::where('fk_user', $idUser)->latest()->first();
         return $orders;
-
     }
+
+    public function orderById($orderId){
+        $order = Order::find($orderId);
+        return $order;
+    }
+
 
 }

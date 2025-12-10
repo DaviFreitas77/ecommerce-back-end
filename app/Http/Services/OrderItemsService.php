@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Services;
-
-
 use App\Models\OrderItems;
 use App\Models\Product;
 
@@ -22,6 +20,8 @@ class OrderItemsService
                     'quantity' => $item['quantity'],
                     'price' => $product->price,
                     'total' => $product->price * $item['quantity'],
+                    'fk_color'=> $item['color'],
+                    'fk_size'=> $item['size'],
                     'fk_order' => $idOrder,
 
                 ]);

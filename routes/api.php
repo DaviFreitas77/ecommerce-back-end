@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\CupomController;
 use App\Http\Controllers\logradouroController;
 use App\Http\Controllers\MCPController;
 use App\Http\Controllers\MercadoPagoWebhookController;
@@ -29,6 +30,12 @@ Route::prefix('auth')->group(function () {
     Route::post('/loginGoogle', [UserController::class, 'LoginGoogle']);
 });
 
+Route::prefix('order')->group(function(){
+    Route::get('/myOrder',[orderController::class,'fetchOrderUser']);
+    Route::get('/latestOrder', [orderController::class, 'latestOrder']);
+    Route::post('/createOrder', [orderController::class, 'crateOrder']);
+
+});
 
 
 Route::prefix('prod')->group(function () {
@@ -48,6 +55,7 @@ Route::get('/sizes', [SizeController::class, 'fetchSize']);
 // Route::get('/recomendatation/{id}', [ProductController::class, 'recomendation']);
 Route::delete('delProduct/{id}', [ProductController::class, 'delProduct']);
 Route::post('/registerProduct', [ProductController::class, 'createProduct']);
+Route::post('/createCupom',[CupomController::class,'createCupom']);
 
 
 
@@ -71,11 +79,13 @@ Route::prefix('checkout')->group(function () {
     Route::post('/checkZipCode', [ZIPCodeController::class, 'CheckZipCode']);
     Route::post('/logradouro', [logradouroController::class,'createLogradouro']);
     Route::get('/logradouroUser', [logradouroController::class,'fetchLogradouro']);
+    Route::post('/useCupom',[CupomController::class,'useCupom']);
 })->middleware('auth:sanctum');
 
 
 
+
+
 Route::post('/changeStatus', [orderController::class, 'changeOrderStatus'])->middleware('auth:sanctum');
-Route::get('/latestOrder', [orderController::class, 'latestOrder']);
 
 // Route::post('/createPayment', [stripeController::class, 'createPayment'])->middleware('auth:sanctum');
