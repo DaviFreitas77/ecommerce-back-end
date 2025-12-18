@@ -32,6 +32,8 @@ class logradouroController extends Controller
             $logradouro->number = $validated['number'];
             $logradouro->fk_user = $idUser;
             $logradouro->save();
+
+            return response()->json(['id' => $logradouro->id]);
         } catch (ErrorException $e) {
             return response()->json($e->getMessage());
         }
@@ -45,6 +47,7 @@ class logradouroController extends Controller
         return response()->json(
             $logradouro->map(function ($l) {
                 return [
+                    'id' => $l->id,
                     'street' => $l->type,
                     'zip_code' => $l->zip_code,
                     'district' => $l->district,

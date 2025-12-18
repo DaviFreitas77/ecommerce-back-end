@@ -18,6 +18,8 @@
             table-layout: fixed;
             background-color: #f6f9fc;
             padding-bottom: 40px;
+            padding-top: 40px;
+
         }
 
         .main-table {
@@ -114,7 +116,7 @@
 
             <tr>
                 <td class="content">
-                    <p class="greeting">Olá, Davi!</p>
+                    <p class="greeting">Olá, {{ $name }}!</p>
                     <p>Recebemos o pagamento do seu pedido com sucesso.  
                     Agora estamos preparando tudo para o envio.</p>
 
@@ -127,7 +129,7 @@
 
                         <div class="order-item">
                             <span class="label">Número:</span>
-                            <span class="value">#9909123</span>
+                            <span class="value">#{{$order}}</span>
                         </div>
                         <div class="order-item">
                             <span class="label">Frete:</span>

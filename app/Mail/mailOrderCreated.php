@@ -13,12 +13,15 @@ class mailOrderCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public string $name;
+    public string $numberOrder;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(string $name,string $numberOrder)
     {
-        //
+        $this->name = $name;
+        $this->numberOrder = $numberOrder;
     }
 
     /**
@@ -27,8 +30,8 @@ class mailOrderCreated extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('example@example.com', 'Test Sender'),
-            subject: 'Mail Order Created',
+            from: new Address('freitaadavi20@gmail.com', 'Bazar virtual'),
+            subject: 'Uhuul,pagamento confirmado',
         );
     }
 
@@ -39,6 +42,7 @@ class mailOrderCreated extends Mailable
     {
         return new Content(
             view: 'mail.viewMailOrderCreated',
+            with: ['name' => $this->name,'order'=>$this->numberOrder]
         );
     }
 

@@ -26,9 +26,12 @@ return new class extends Migration
             $table->decimal('total', 10, 2);
             $table->string('payment_method')->nullable();
             $table->unsignedInteger('fk_cupom')->nullable();
+            $table->unsignedInteger('fk_adress')->nullable();
             $table->timestamp('created_at')->useCurrent();
+
             $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('fk_cupom')->references('id')->on('discount_cupoms')->onDelete('set null');
+            $table->foreign('fk_adress')->references('id')->on('tb_logradouro')->onDelete('cascade');
         });
     }
 

@@ -22,6 +22,7 @@ class orderController extends Controller
   {
     $validated = $request->validate([
       'items' => ['required', 'array'],
+      'idLogradouro'=>['nullable']
     ]);
 
     $userId = Auth::user()->id;
@@ -30,7 +31,7 @@ class orderController extends Controller
     $sumPrice = $this->productService->fethPricesProduct($validated['items']);
 
 
-    $newOder = $this->orderService->create($userId, 'pending', $sumPrice);
+    $newOder = $this->orderService->create($userId, 'pending', $sumPrice,$validated['idLogradouro']);
 
 
     $newOrderItems = $this->orderItemsService->create($validated['items'], $newOder->id);

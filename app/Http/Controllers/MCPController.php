@@ -6,6 +6,7 @@ use App\Http\Services\MCPService;
 use App\Http\Services\OrderService;
 use App\Http\Services\ShoppingCartService;
 use App\Mail\mailOrderCreated;
+use App\Models\Order;
 use ErrorException;
 use MercadoPago\MercadoPagoConfig;
 use Illuminate\Http\Request;
@@ -28,6 +29,8 @@ class MCPController extends Controller
     }
     public function proccessPayment(Request $request)
     {
+        $nameUser = Auth::user()->name;
+
         try {
             $data = $request->formdata;
             $order = $request->order;
@@ -61,8 +64,10 @@ class MCPController extends Controller
 
             ], $request_options);
 
+            $numberOrder = Order::where('id',$payment->external_reference)->first()->number_order;
+
             if ($payment->status === "approved") {
-                  Mail::to('davifreitaz999@gmail.com')->send(new mailOrderCreated());
+                  Mail::to('davifreitaz999@gmail.com')->send(new mailOrderCreated($nameUser, $numberOrder));
                 $this->orderService->changeOrderStatus('preparando',$payment->external_reference);
                 $this->orderService->updatePaymentOrderService($payment->payment_type_id, $payment->external_reference);
                 $this->shoppingCartService->deleteCartUser(Auth::user()->id);

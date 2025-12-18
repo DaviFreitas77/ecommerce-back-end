@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class OrderService
 {
 
-    public function create(int $idUser, string $status = 'pending', float $total = 0)
+    public function create(int $idUser, string $status = 'pending', float $total = 0,int $idAdress)
     {
         $newOder = new Order;
         $newOder->number_order = rand(10000, 99999);
@@ -17,6 +17,7 @@ class OrderService
         $newOder->status = $status;
         $newOder->payment_method = null;
         $newOder->total = $total;
+        $newOder->fk_adress = $idAdress;
         $newOder->created_at = now();
         $newOder->save();
         return $newOder;
