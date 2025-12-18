@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Services\MCPService;
 use App\Http\Services\OrderService;
 use App\Http\Services\ShoppingCartService;
+use App\Mail\mailOrderCreated;
 use ErrorException;
 use MercadoPago\MercadoPagoConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
 
@@ -60,11 +62,12 @@ class MCPController extends Controller
             ], $request_options);
 
             if ($payment->status === "approved") {
-                $this->orderService->changeOrderStatus('preparando');
+                  Mail::to('davifreitaz999@gmail.com')->send(new mailOrderCreated());
+                $this->orderService->changeOrderStatus('preparando',$payment->external_reference);
                 $this->orderService->updatePaymentOrderService($payment->payment_type_id, $payment->external_reference);
                 $this->shoppingCartService->deleteCartUser(Auth::user()->id);
             } elseif ($payment->status === "in_process") {
-                $this->orderService->changeOrderStatus('processando');
+                $this->orderService->changeOrderStatus('processando',$payment->external_reference);
             } else {
                 return response()->json($payment);
             }

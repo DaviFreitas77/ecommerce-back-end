@@ -6,10 +6,12 @@ use App\Http\Services\MCPService;
 use App\Http\Services\OrderItemsService;
 use App\Http\Services\OrderService;
 use App\Http\Services\ProductService;
+use App\Mail\mailOrderCreated;
 use App\Models\Order;
 use App\Models\OrderItems;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class orderController extends Controller
 {
@@ -35,6 +37,8 @@ class orderController extends Controller
 
     $preference = $this->mcpService->createPreferenceService($validated['items'], $sumPrice, $newOder->id);
 
+
+
     return response()->json([
       "total" => $preference['total'],
       "orderId" => $preference['orderId'],
@@ -42,13 +46,6 @@ class orderController extends Controller
     ]);
   }
 
-
-
-  public function changeOrderStatus($status)
-  {
-    $changeStatus = $this->orderService->changeOrderStatus($status);
-    return response()->json($changeStatus);
-  }
 
 
   public function changePaymentMethod($method, $idOrder)
@@ -90,5 +87,14 @@ class orderController extends Controller
     }
 
     return response()->json($orderComplet);
+  }
+
+  public function deleteOrderExpired()
+  {
+    $order = Order::where('status', 'pending')->where('created_at', '<', now()->subMinutes(30))->get();
+
+    foreach ($order as $ord) {
+      $ord->delete();
+    }
   }
 }

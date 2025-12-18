@@ -22,10 +22,9 @@ class OrderService
         return $newOder;
     }
 
-    public function changeOrderStatus($status)
+    public function changeOrderStatus($status,$idOrder)
     {
-        $idUser = Auth::user()->id;
-        $order = Order::where('fk_user', $idUser)->where('status', 'pending')->first();
+        $order = Order::find($idOrder);
         $order->status = $status;
         $order->save();
         return $order;

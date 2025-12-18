@@ -60,6 +60,8 @@ class CupomController extends Controller
         $validated = $request->validate([
             'nameCupom' => 'required|string|exists:discount_cupoms,nameCupom',
             'order' => 'required|integer|exists:tb_order,id',
+        ],[
+            'nameCupom.exists' => 'Cupom inválido.',
         ]);
 
 
