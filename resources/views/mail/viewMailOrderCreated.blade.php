@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +31,7 @@
             border-spacing: 0;
             color: #4a4a4a;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
         .header {
@@ -94,8 +95,14 @@
             border-bottom: none;
         }
 
-        .label { font-weight: 600; color: #4b5563; }
-        .value { color: #111827; }
+        .label {
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .value {
+            color: #111827;
+        }
 
         .footer {
             text-align: center;
@@ -105,6 +112,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="wrapper">
         <table class="main-table">
@@ -117,35 +125,35 @@
             <tr>
                 <td class="content">
                     <p class="greeting">Olá, {{ $name }}!</p>
-                    <p>Recebemos o pagamento do seu pedido com sucesso.  
-                    Agora estamos preparando tudo para o envio.</p>
+                    <p>Recebemos o pagamento do seu pedido com sucesso.
+                        Agora estamos preparando tudo para o envio.</p>
 
                     <div class="status">
                         ✔ Pagamento aprovado
                     </div>
 
-                    <div class="order-card">
-                        <span class="order-title">Resumo do Pedido</span>
+                    @foreach($products as $product)
+                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
+                        <tr>
+                            <td width="90">
+                                @if(!empty($product['image']))
+                                <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" width="80" height="110">
+                                @endif
+                            </td>
+                            <td valign="top" >
+                                <p style="margin:0; font-weight:bold; font-size:14px; color:#333;">{{ $product['name'] }}</p>
+                                <p style="margin:2px 0 0 0; font-size:13px; color:#555;">Cor: {{ $product['color'] }}</p>
+                                <p style="margin:2px 0 0 0; font-size:13px; color:#555;">Quantidade: {{ $product['quantity'] }}</p>
+                                <p style="margin:2px 0 0 0; font-size:13px; color:#555;">Preço: R$ {{ number_format($product['price'], 2, ',', '.') }}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    @endforeach
 
-                        <div class="order-item">
-                            <span class="label">Número:</span>
-                            <span class="value">#{{$order}}</span>
-                        </div>
-                        <div class="order-item">
-                            <span class="label">Frete:</span>
-                            <span class="value">R$ 10,00</span>
-                        </div>
-                        <div class="order-item">
-                            <span class="label">Cupom:</span>
-                            <span class="value">1COMPRA</span>
-                        </div>
-                        <div class="order-item">
-                            <span class="label">Endereço:</span>
-                            <span class="value">Rua Exemplo, 100 - SP</span>
-                        </div>
-                    </div>
 
-        
+
+
+
                 </td>
             </tr>
 
@@ -157,4 +165,5 @@
         </table>
     </div>
 </body>
+
 </html>

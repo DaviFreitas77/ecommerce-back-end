@@ -15,13 +15,15 @@ class mailOrderCreated extends Mailable
 
     public string $name;
     public string $numberOrder;
+    public array $products;
     /**
      * Create a new message instance.
      */
-    public function __construct(string $name,string $numberOrder)
+    public function __construct(string $name,string $numberOrder,array $products)
     {
         $this->name = $name;
         $this->numberOrder = $numberOrder;
+        $this->products = $products;
     }
 
     /**
@@ -42,7 +44,7 @@ class mailOrderCreated extends Mailable
     {
         return new Content(
             view: 'mail.viewMailOrderCreated',
-            with: ['name' => $this->name,'order'=>$this->numberOrder]
+            with: ['name' => $this->name,'order'=>$this->numberOrder,'products'=>$this->products]
         );
     }
 

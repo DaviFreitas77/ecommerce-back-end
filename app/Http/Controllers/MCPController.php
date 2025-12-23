@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\ColorService;
 use App\Http\Services\MCPService;
 use App\Http\Services\OrderService;
+use App\Http\Services\ProductService;
 use App\Http\Services\ShoppingCartService;
+use App\Http\Services\SizeService;
 use App\Mail\mailOrderCreated;
 use App\Models\Order;
+use App\Models\OrderItems;
 use ErrorException;
 use MercadoPago\MercadoPagoConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
@@ -20,7 +25,7 @@ MercadoPagoConfig::setAccessToken(env('MERCADO_PAGO_ACCESS_TOKEN'));
 
 class MCPController extends Controller
 {
-    public function __construct(private OrderService $orderService, private ShoppingCartService $shoppingCartService, private MCPService $mcpService) {}
+    public function __construct(private OrderService $orderService, private ShoppingCartService $shoppingCartService, private MCPService $mcpService, private ProductService $productService,private ColorService $colorService,private SizeService $sizeService) {}
 
     public function createPreference($items, $sumPrice, $orderId)
     {
@@ -30,6 +35,7 @@ class MCPController extends Controller
     public function proccessPayment(Request $request)
     {
         $nameUser = Auth::user()->name;
+        $emailUser = Auth::user()->email;
 
         try {
             $data = $request->formdata;
@@ -64,15 +70,38 @@ class MCPController extends Controller
 
             ], $request_options);
 
-            $numberOrder = Order::where('id',$payment->external_reference)->first()->number_order;
+            //numero do pedido
+            $numberOrder = Order::where('id', $payment->external_reference)->first();
+
+            //recuperando produtos ligado ao pedido
+            $orderItems = OrderItems::with('product.images')->where('fk_order', $numberOrder->id)->get();
+
+            $productsData = $orderItems->map(function ($item) {
+                 $firstImage = $item->product->images->first(); 
+                   $imageUrl = $firstImage ? $firstImage->image : null; 
+                   $colorName = $this->colorService->getColorById
+                   ($item->fk_color);
+                   $sizeName = $this->sizeService->getSizeById($item->fk_size);
+                return [
+                    'name' => $item->product->name,
+                    'price' => $item->product->price,
+                    'color'=> $colorName,
+                    'size' =>$sizeName,
+                    'quantity'=> $item->quantity,
+                    'image' => $imageUrl
+                ];
+            })->toArray();
 
             if ($payment->status === "approved") {
-                  Mail::to('davifreitaz999@gmail.com')->send(new mailOrderCreated($nameUser, $numberOrder));
-                $this->orderService->changeOrderStatus('preparando',$payment->external_reference);
+                Mail::to($emailUser)->send(new mailOrderCreated($nameUser, $numberOrder->number_order, $productsData));
+
+                $this->orderService->changeOrderStatus('preparando', $payment->external_reference);
+
                 $this->orderService->updatePaymentOrderService($payment->payment_type_id, $payment->external_reference);
+
                 $this->shoppingCartService->deleteCartUser(Auth::user()->id);
             } elseif ($payment->status === "in_process") {
-                $this->orderService->changeOrderStatus('processando',$payment->external_reference);
+                $this->orderService->changeOrderStatus('processando', $payment->external_reference);
             } else {
                 return response()->json($payment);
             }

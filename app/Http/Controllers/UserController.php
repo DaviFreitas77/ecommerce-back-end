@@ -21,18 +21,22 @@ class UserController extends Controller
         $validated = $request->validate([
             "name" => ['required', 'string'],
             "email" => ['required', 'string', 'unique:users,email'],
-            "password" => ['required', 'string']
+            "password" => ['required', 'string'],
+            "lastName" => ['required', 'string'],
+            "tel" => ['required', 'string']
         ], [
             "name.required" => "o nome é obrigatório",
             "email.required" => "o email é obrigatório",
             "password.required" => "a senha é obrigatório",
             "email.unique" => "email ja vinculado a uma conta!",
+
         ]);
 
-        $user = $this->userService->registerUser($validated['email'], $validated['password'], $validated['name']);
+        $user = $this->userService->registerUser($validated['email'], $validated['password'], $validated['name'], $validated['lastName'], $validated['tel']);
 
         Auth::login($user);
         $request->session()->regenerate();
+
 
         return response()->json([
             "message" => "conta criada com sucesso",
