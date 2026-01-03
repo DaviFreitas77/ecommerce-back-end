@@ -22,16 +22,19 @@ class orderController extends Controller
   {
     $validated = $request->validate([
       'items' => ['required', 'array'],
-      'idLogradouro'=>['nullable']
+      'idLogradouro' => ['nullable']
     ]);
 
+    $adressId = $validated['idLogradouro'] ?? null;
+
+    if (empty($adressId) || !is_numeric($adressId)) {
+      $adressId = null;
+    }
     $userId = Auth::user()->id;
+
     //cria um novo pedido
-
     $sumPrice = $this->productService->fethPricesProduct($validated['items']);
-
-
-    $newOder = $this->orderService->create($userId, 'pending', $sumPrice,$validated['idLogradouro']);
+    $newOder = $this->orderService->create($userId, 'pending', $sumPrice, $adressId);
 
 
     $newOrderItems = $this->orderItemsService->create($validated['items'], $newOder->id);

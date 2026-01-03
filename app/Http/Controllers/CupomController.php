@@ -76,7 +76,7 @@ class CupomController extends Controller
             return response()->json(['message' => 'Cupom esgotado'], 400);
         }
 
-        if ($cupom->nameCupom === '1COMPRA') {
+        if ($cupom->nameCupom === 'PRIMEIRA10') {
             $usedCupom =  $userCupom->where('fk_user', $idUser)
                 ->where('fk_cupom', $cupom->id)
                 ->exists();

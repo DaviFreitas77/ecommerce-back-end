@@ -15,7 +15,8 @@ use ErrorException;
 use MercadoPago\MercadoPagoConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use MercadoPago\Exceptions\MPApiException;
+
 use Illuminate\Support\Facades\Mail;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
@@ -25,7 +26,7 @@ MercadoPagoConfig::setAccessToken(env('MERCADO_PAGO_ACCESS_TOKEN'));
 
 class MCPController extends Controller
 {
-    public function __construct(private OrderService $orderService, private ShoppingCartService $shoppingCartService, private MCPService $mcpService, private ProductService $productService,private ColorService $colorService,private SizeService $sizeService) {}
+    public function __construct(private OrderService $orderService, private ShoppingCartService $shoppingCartService, private MCPService $mcpService,private ColorService $colorService,private SizeService $sizeService) {}
 
     public function createPreference($items, $sumPrice, $orderId)
     {
@@ -55,7 +56,8 @@ class MCPController extends Controller
                 "description"          => "Pedido no meu site",
                 "installments"         => $data["installments"],
                 "payment_method_id"    => $data["payment_method_id"],
-                "issuer_id"            => $data["issuer_id"],
+                "issuer_id" => (int) $data["issuer_id"],
+
 
                 "payer" => [
                     "email" => $data["payer"]["email"],
@@ -106,9 +108,12 @@ class MCPController extends Controller
                 return response()->json($payment);
             }
             return response()->json($payment);
-        } catch (ErrorException $e) {
-            return response()->json(['error' => $e->getMessage()]);
-        }
+        } catch (MPApiException $e) {
+    return response()->json([
+        'status' => $e->getApiResponse()->getStatusCode(),
+        'error'  => $e->getApiResponse()->getContent(),
+    ], 500);
+}
     }
 
     public function proccessPaymentPix(Request $request)

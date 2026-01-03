@@ -1,13 +1,17 @@
 <?php
+
 namespace App\Http\Services;
+
 use App\Models\Product;
 use MercadoPago\Client\Preference\PreferenceClient;
 use ErrorException;
 use MercadoPago\MercadoPagoConfig;
 
 MercadoPagoConfig::setAccessToken(env('MERCADO_PAGO_ACCESS_TOKEN'));
-class MCPService {
-    public function createPreferenceService($items,$sumPrice,$orderId)
+
+class MCPService
+{
+    public function createPreferenceService($items, $sumPrice, $orderId)
     {
 
 
@@ -16,7 +20,6 @@ class MCPService {
             if (!$product) {
                 throw new \Exception("Produto não encontrado: ID {$items['id']}");
             }
-
             return [
                 "title" => $items['name'],
                 "quantity" => max(1, (int)$items['quantity']),
@@ -31,17 +34,14 @@ class MCPService {
 
             ]);
 
-              return [
-            "id" => $preference->id,
-            "url" => $preference->init_point,
-            "total" => $sumPrice,
-            "orderId" => $orderId
-        ];
+            return [
+                "id" => $preference->id,
+                "url" => $preference->init_point,
+                "total" => $sumPrice,
+                "orderId" => $orderId
+            ];
         } catch (ErrorException $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
     }
 }
- 
- 
- 
