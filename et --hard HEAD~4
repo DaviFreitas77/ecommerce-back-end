@@ -1,0 +1,63 @@
+[33m83b3bf7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m login com google
+[33m112da6b[m adiciona login com google
+[33m35c8369[m remove valores de exemplo para STRIPE_SECRET e MERCADO_PAGO_ACCESS_TOKEN no arquivo .env.example
+[33m1adf4a5[m adiciona suporte para autenticação via Google e refatora registro de usuário
+[33m2d37b93[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m atualiza lógica de uso de cupons e melhora tratamento de exceções no processamento de pagamentos
+[33mc7441e8[m adiciona suporte para informações de produtos no e-mail de confirmação de pedido e atualiza o cadastro de usuário com novos campos
+[33m93cc67f[m adiciona suporte para endereço em pedidos e atualiza notificação de e-mail com detalhes do pedido
+[33m9353bf0[m implementa comando para deletar pedidos expirados e adiciona notificação por e-mail ao criar pedido
+[33m098335f[m implementa sistema de cupons de desconto e refatora serviços de pedidos
+[33mc27e8fb[m testando auth em api
+[33m996f305[m protegendo rota de auth novamente
+[33mf576bbd[m atualizando nome do service
+[33mfd65615[m testando auth sem proteção do token
+[33m5eddc88[m removendo stateful api do middleware
+[33m74df1d7[m cors
+[33m9e3c226[m alterando cors
+[33m306c3d6[m alterando auth para routes/web
+[33mf425a29[m subindo arquivos novos
+[33meb2e67f[m alterando sensitive dos arquivos de de service
+[33mc0b7520[m add ProductService
+[33m7f1cda8[m add ProductService
+[33m43a7805[m alterando namespace do arquivo para produção
+[33m0deee6b[m removendo imports inutilizados
+[33m774cfa7[m ajustando construct do produto
+[33m65bbbbf[m removendo linhas nao ultizadas e ajustando namespace
+[33m18f547c[m removendo imports desnecessarios
+[33m2ba44a9[m ajustando letra minuscula no arquivo de services
+[33m1650cc9[m alterando namespace dos services
+[33ma257f07[m seeds
+[33mdd865f9[m retornando numero do pedido e organizando rotas
+[33m2bf2cb5[m cobrando total MCP
+[33m85d6a04[m integrando MCP para pix e cartão de crédito
+[33m9ef78d9[m refatorar e alterar status do pedido ao confirmar pagamento
+[33mb47f2cf[m integrando meios de pagamento
+[33m6b6922e[m feat:busca de produto
+[33m72f75fb[m cruar função para trazer total do carrinho
+[33mfecba4d[m adicionar logica de carrinho
+[33mbf5eba3[m refatorar controllers e criar camada de serviço
+[33ma0f5839[m separando services de usuario e ajustando cors para autenticação spa
+[33md69f788[m Merge pull request #1 from DaviFreitas77/dev
+[33me2e27d0[m[33m ([m[1;31morigin/dev[m[33m)[m ajustes
+[33m879d767[m ajustando para cadastrar sem descrição
+[33m4de9a02[m ajustando case-sensitive na sizes
+[33m49cce17[m add rota de excluir produto
+[33mcd9a5f5[m arrumando controllerProduct
+[33mc14bec9[m ajustando crateProduct>
+[33mbc0c891[m add ?->
+[33m6c8ff26[m del procfile
+[33m5f6d771[m del procfile
+[33m73d3ad5[m del procfile
+[33mf965e40[m del procfile
+[33m17cd939[m add procfile
+[33mdae99bb[m add procfile
+[33m15504a6[m adicionando recomendação
+[33m8016229[m adicionando relação  entre tabelas
+[33m9831085[m autenticando o usuario ao cadastrar
+[33m41ae96e[m protegen
+[33m478106a[m protegendo rota de criação de produtos
+[33maebb719[m adicionando login com google
+[33m4dd5d60[m adicionando sanctum e criando grupo de rotas
+[33m79a3ec2[m adicionando função para puxar o produto pelo id
+[33m39b2660[m adicionando controllers modelos e migrações
+[33m871a028[m Primeiro commit
