@@ -85,7 +85,7 @@ class UserController extends Controller
         try {
             $jwks = json_decode(file_get_contents('https://www.googleapis.com/oauth2/v3/certs'), true);
 
-            $keys = JWK::parseKeySet($jwks);
+            $keys = JWK::parseKeySet($jwks) ;
 
             $decoded = JWT::decode($token, $keys);
 
