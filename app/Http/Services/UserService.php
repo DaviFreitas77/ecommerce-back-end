@@ -9,14 +9,16 @@ use Illuminate\Support\Facades\Hash;
 class UserService
 {
 
-  public function registerUser($email, $password, $name,$lastName,$tel)
+  public function registerUser($email, $password = null, $name,$lastName,$tel)
   {
     $user = new User();
     $user->name =  strtolower($name);
     $user->email = strtolower($email);
     $user->lastName = strtolower($lastName);
     $user->tel = $tel;
-    $user->password = Hash::make($password);
+   $user->password = $password
+    ? Hash::make($password)
+    : null;
     $user->role = "user";
     $user->save();
     return $user;

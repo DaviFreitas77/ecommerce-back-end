@@ -27,14 +27,13 @@ Route::prefix('auth')->group(function () {
     Route::post('/register', [UserController::class, 'createUser']);
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
-    Route::post('/loginGoogle', [UserController::class, 'LoginGoogle']);
+  
 });
 
-Route::prefix('order')->group(function(){
-    Route::get('/myOrder',[orderController::class,'fetchOrderUser']);
+Route::prefix('order')->group(function () {
+    Route::get('/myOrder', [orderController::class, 'fetchOrderUser']);
     Route::get('/latestOrder', [orderController::class, 'latestOrder']);
     Route::post('/createOrder', [orderController::class, 'crateOrder']);
-
 });
 
 
@@ -55,7 +54,7 @@ Route::get('/sizes', [SizeController::class, 'fetchSize']);
 // Route::get('/recomendatation/{id}', [ProductController::class, 'recomendation']);
 Route::delete('delProduct/{id}', [ProductController::class, 'delProduct']);
 Route::post('/registerProduct', [ProductController::class, 'createProduct']);
-Route::post('/createCupom',[CupomController::class,'createCupom']);
+Route::post('/createCupom', [CupomController::class, 'createCupom']);
 
 
 
@@ -77,9 +76,9 @@ Route::prefix('mcp')->group(function () {
 
 Route::prefix('checkout')->group(function () {
     Route::post('/checkZipCode', [ZIPCodeController::class, 'CheckZipCode']);
-    Route::post('/logradouro', [logradouroController::class,'createLogradouro']);
-    Route::get('/logradouroUser', [logradouroController::class,'fetchLogradouro']);
-    Route::post('/useCupom',[CupomController::class,'useCupom']);
+    Route::post('/logradouro', [logradouroController::class, 'createLogradouro']);
+    Route::get('/logradouroUser', [logradouroController::class, 'fetchLogradouro']);
+    Route::post('/useCupom', [CupomController::class, 'useCupom']);
 })->middleware('auth:sanctum');
 
 

@@ -9,5 +9,6 @@ Route::prefix('auth')->group(function () {
     Route::post('/register', [UserController::class, 'createUser']);
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
-    Route::post('/loginGoogle', [UserController::class, 'LoginGoogle']);
+    Route::get('/google/redirect', [UserController::class, 'redirectToGoogle']);
+    Route::get('/google/callback', [UserController::class, 'handleGoogleCallback']);
 });

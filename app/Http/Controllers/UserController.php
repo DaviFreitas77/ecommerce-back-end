@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Services\UserService;
 use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Firebase\JWT\JWT;
-use Firebase\JWT\JWK;
+use Laravel\Socialite\Socialite;
 
 
 class UserController extends Controller
@@ -73,48 +71,50 @@ class UserController extends Controller
     }
 
 
-    public function LoginGoogle(Request $request)
+    public function redirectToGoogle()
     {
+        return Socialite::driver('google')->redirect();
+    }
 
 
-        $token = $request->token;
+    public function handleGoogleCallback(Request $request)
+    {
+        $googleUser = Socialite::driver('google')->user();
 
-        if (!$token) {
-            return response()->json(['token não encontrado'], 400);
+        $email = $googleUser->email;
+
+        $user = User::where('email', $email)->first();
+
+
+        if (!$user) {
+            $newUser = $this->userService->registerUser($googleUser->email, null, $googleUser->user['given_name'], $googleUser->user['family_name'], null);
+
+            Auth::login($newUser);
+            $request->session()->regenerate();
         }
-        try {
-            $jwks = json_decode(file_get_contents('https://www.googleapis.com/oauth2/v3/certs'), true);
 
-            $keys = JWK::parseKeySet($jwks);
-
-            $decoded = JWT::decode($token, $keys);
-
-            $user = User::where('email', $decoded->email)->first();
-
-            if ($user && $user->password === null) {
-                Auth::login($user);
-                $token = $user->createToken('auth_token')->plainTextToken;
-                return response()->json([
-                    'token' => $token,
-                    'token_type' => 'Bearer',
-                    'user' => $user,
-                ]);
-            }
-
-            $user = new User;
-            $user->email = $decoded->email;
-            $user->name = $decoded->name;
-            $user->role = "user";
-            $user->save();
-
-
-            $tokenJwt = $user->createToken('auth_token')->plainTextToken;
-            return response()->json([
-                'token' => $tokenJwt,
-                'user' => $user
-            ]);
-        } catch (Exception $e) {
-            return response()->json($e->getMessage());
+        if ($user && $user->password !== null) {
+            return redirect(
+                env('SANCTUM_FRONTEND_URL') . '/?loginModal=true&error=not_google'
+            );
         }
+
+        if ($user && $user->password == null) {
+            Auth::login($user);
+        }
+
+        return redirect(
+            env('SANCTUM_FRONTEND_URL')
+        );
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return response()->json([
+            'message' => 'Logout realizado com sucesso'
+        ], 200);
     }
 }
