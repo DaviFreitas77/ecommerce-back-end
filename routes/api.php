@@ -27,8 +27,13 @@ Route::prefix('auth')->group(function () {
     Route::post('/register', [UserController::class, 'createUser']);
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
-  
 });
+
+Route::prefix('user')->group(function () {
+    Route::patch('/update', [UserController::class, 'updateUser']);
+    Route::get('/myLogradouro', [ZIPCodeController::class, 'myAdress']);
+    Route::delete('/deleteLogradouro/{id}', [ZIPCodeController::class, 'deleteAdress']);
+})->middleware('auth:sanctum');
 
 Route::prefix('order')->group(function () {
     Route::get('/myOrder', [orderController::class, 'fetchOrderUser']);
