@@ -26,7 +26,7 @@ MercadoPagoConfig::setAccessToken(env('MERCADO_PAGO_ACCESS_TOKEN'));
 
 class MCPController extends Controller
 {
-    public function __construct(private OrderService $orderService, private ShoppingCartService $shoppingCartService, private MCPService $mcpService,private ColorService $colorService,private SizeService $sizeService) {}
+    public function __construct(private OrderService $orderService, private ShoppingCartService $shoppingCartService, private MCPService $mcpService, private ColorService $colorService, private SizeService $sizeService) {}
 
     public function createPreference($items, $sumPrice, $orderId)
     {
@@ -79,17 +79,16 @@ class MCPController extends Controller
             $orderItems = OrderItems::with('product.images')->where('fk_order', $numberOrder->id)->get();
 
             $productsData = $orderItems->map(function ($item) {
-                 $firstImage = $item->product->images->first(); 
-                   $imageUrl = $firstImage ? $firstImage->image : null; 
-                   $colorName = $this->colorService->getColorById
-                   ($item->fk_color);
-                   $sizeName = $this->sizeService->getSizeById($item->fk_size);
+                $firstImage = $item->product->images->first();
+                $imageUrl = $firstImage ? $firstImage->image : null;
+                $colorName = $this->colorService->getColorById($item->fk_color);
+                $sizeName = $this->sizeService->getSizeById($item->fk_size);
                 return [
                     'name' => $item->product->name,
                     'price' => $item->product->price,
-                    'color'=> $colorName,
-                    'size' =>$sizeName,
-                    'quantity'=> $item->quantity,
+                    'color' => $colorName,
+                    'size' => $sizeName,
+                    'quantity' => $item->quantity,
                     'image' => $imageUrl
                 ];
             })->toArray();
@@ -109,11 +108,11 @@ class MCPController extends Controller
             }
             return response()->json($payment);
         } catch (MPApiException $e) {
-    return response()->json([
-        'status' => $e->getApiResponse()->getStatusCode(),
-        'error'  => $e->getApiResponse()->getContent(),
-    ], 500);
-}
+            return response()->json([
+                'status' => $e->getApiResponse()->getStatusCode(),
+                'error'  => $e->getApiResponse()->getContent(),
+            ], 500);
+        }
     }
 
     public function proccessPaymentPix(Request $request)

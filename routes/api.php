@@ -21,8 +21,6 @@ Route::middleware('auth:sanctum')->get('/auth/me', function (Request $request) {
     return response()->json($request->user());
 });
 
-
-
 Route::prefix('auth')->group(function () {
     Route::post('/register', [UserController::class, 'createUser']);
     Route::post('/login', [UserController::class, 'login']);
@@ -31,6 +29,12 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('user')->group(function () {
     Route::patch('/update', [UserController::class, 'updateUser']);
+})->middleware('auth:sanctum');
+
+Route::prefix("logradouro")->group(function () {
+    Route::post('/checkZipCode', [ZIPCodeController::class, 'CheckZipCode']);
+    Route::post('/logradouro', [logradouroController::class, 'createLogradouro']);
+    Route::get('/logradouroUser', [logradouroController::class, 'fetchLogradouro']);
     Route::get('/myLogradouro', [ZIPCodeController::class, 'myAdress']);
     Route::delete('/deleteLogradouro/{id}', [ZIPCodeController::class, 'deleteAdress']);
 })->middleware('auth:sanctum');
@@ -80,9 +84,6 @@ Route::prefix('mcp')->group(function () {
 
 
 Route::prefix('checkout')->group(function () {
-    Route::post('/checkZipCode', [ZIPCodeController::class, 'CheckZipCode']);
-    Route::post('/logradouro', [logradouroController::class, 'createLogradouro']);
-    Route::get('/logradouroUser', [logradouroController::class, 'fetchLogradouro']);
     Route::post('/useCupom', [CupomController::class, 'useCupom']);
 })->middleware('auth:sanctum');
 
