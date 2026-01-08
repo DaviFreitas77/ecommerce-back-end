@@ -122,4 +122,88 @@ class ProductService
         return $sumPrice;
     }
 
+    public function fetchProduct()
+    {
+        $products = Product::with(['category'])->get();
+
+        $result = $products->map(function ($product) {
+            return [
+                "id" => $product->id,
+                "name" => $product->name,
+                "price" => $product->price,
+                "lastPrice" => $product->lastPrice,
+                'description' => $product->description,
+                "category" => $product->category,
+                "image" => $product->images->pluck('image'),
+                'sizes' => $product->sizes->pluck('name'),
+                'color' => $product->colors->pluck('name'),
+            ];
+        });
+
+
+        return response()->json($result);
+    }
+
+    public function recomendation($id)
+    {
+        $product = Product::with(['variations'])->where('id', '=', $id)->first();
+
+        $category = $product->category->id;
+
+        $products = Product::with('variations')->where('fkCategory', $category)->where("id", "!=", $id)->limit(6)->get();
+
+        if ($products->isEmpty()) {
+            $allProduct = Product::with("variations")->limit(6)->get();
+            $result = $allProduct->map(function ($prod) {
+                return  [
+                    'id' => $prod->id,
+                    "name" => $prod->name,
+                    "price" => $prod->price,
+                    "lastPrice" => $prod->lastPrice,
+                    "image" => $prod->variations->first()->image,
+                    'category' => $prod->category,
+
+                ];
+            });
+            return response()->json($result);
+        }
+        $result = $products->map(function ($prod) {
+            return  [
+                'id' => $prod->id,
+                "name" => $prod->name,
+                "price" => $prod->price,
+                "lastPrice" => $prod->lastPrice,
+                "image" => $prod->variations->first()->image,
+                'category' => $prod->category,
+
+            ];
+        });
+
+        return response()->json($result);
+    }
+
+    public function searchProduct($search)
+    {
+        $products = Product::where('name', 'like', '%' . $search . '%')
+            ->orWhereHas('category', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->with(['category', 'sizes', 'images'])->get();
+
+        $result = $products->map(function ($product) {
+            return [
+                "id" => $product->id,
+                "name" => $product->name,
+                "price" => $product->price,
+                "lastPrice" => $product->lastPrice,
+                'description' => $product->description,
+                "category" => $product->category,
+                "image" => $product->images->pluck('image'),
+                "sizes" => $product->sizes->pluck('name'),
+                "color" => $product->colors->pluck('name'),
+            ];
+        });
+
+        return response()->json($result);
+    }
 }

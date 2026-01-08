@@ -41,8 +41,6 @@ class orderController extends Controller
 
     $preference = $this->mcpService->createPreferenceService($validated['items'], $sumPrice, $newOder->id);
 
-
-
     return response()->json([
       "total" => $preference['total'],
       "orderId" => $preference['orderId'],
@@ -66,39 +64,11 @@ class orderController extends Controller
 
   public function fetchOrderUser()
   {
-    $idUser = Auth::user()->id;
-    $orderUser =  Order::where('fk_user', $idUser)->get();
-
-    $orderComplet = [];
-    foreach ($orderUser as $order) {
-      $orderItems = OrderItems::with('product.images', 'color', 'size')
-        ->where('fk_order', $order->id)
-        ->get();
-
-
-      $infoproducts = $orderItems->map(function ($item) {
-        return ['nameProduct' => $item->product->name, 'quantityProduct' => $item->quantity, 'imageProduct' => $item->product->images->first()->image, 'colorProduct' => $item->color->name, 'sizeProduct' => $item->size->name];
-      });
-
-      $orderComplet[] = [
-        'numberOrder'    => $order->number_order,
-        'status'         => $order->status,
-        'total'          => $order->total,
-        'payment_method' => $order->payment_method,
-        'created_at'     => $order->created_at,
-        'items'          => $infoproducts
-      ];
-    }
-
-    return response()->json($orderComplet);
+    return $this->orderService->fetchOrderUser();
   }
 
   public function deleteOrderExpired()
   {
-    $order = Order::where('status', 'pending')->where('created_at', '<', now()->subMinutes(30))->get();
-
-    foreach ($order as $ord) {
-      $ord->delete();
-    }
+    return $this->orderService->deleteOrderExpired();
   }
 }
