@@ -38,6 +38,6 @@ class LoginController extends Controller
         return response()->json([
             "message" => "login efetuado com sucesso",
             'user' => $user,
-        ],Response::HTTP_OK);
+        ], Response::HTTP_OK);
     }
 }

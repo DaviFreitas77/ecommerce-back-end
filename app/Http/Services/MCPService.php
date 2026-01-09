@@ -135,7 +135,10 @@ class MCPService
             } else {
                 return response()->json($payment);
             }
-            return response()->json($payment);
+            return response()->json([
+                'payment' => $payment,
+                'numberOrder' => $numberOrder->number_order
+            ]);
         } catch (MPApiException $e) {
             return response()->json([
                 'status' => $e->getApiResponse()->getStatusCode(),

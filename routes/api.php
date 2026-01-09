@@ -1,12 +1,10 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CupomController;
 use App\Http\Controllers\logradouroController;
 use App\Http\Controllers\MCPController;
 use App\Http\Controllers\MercadoPagoWebhookController;
-use App\Http\Controllers\orderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductShoppingController;
 use App\Http\Controllers\shoppingCartController;
@@ -15,9 +13,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZIPCodeController;
 use Illuminate\Support\Facades\Route;
 
-// Route::middleware('auth:sanctum')->get('/auth/me', function (Request $request) {
-//   return response()->json($request->user());
-// });
+require __DIR__ . '/api/category.php';
+require __DIR__ . '/api/order.php';
 
 Route::prefix('user')->group(function () {
     Route::patch('/update', [UserController::class, 'updateUser']);
@@ -31,11 +28,7 @@ Route::prefix("logradouro")->group(function () {
     Route::delete('/deleteLogradouro/{id}', [ZIPCodeController::class, 'deleteAdress']);
 })->middleware('auth:sanctum');
 
-Route::prefix('order')->group(function () {
-    Route::get('/myOrder', [orderController::class, 'fetchOrderUser']);
-    Route::get('/latestOrder', [orderController::class, 'latestOrder']);
-    Route::post('/createOrder', [orderController::class, 'crateOrder']);
-});
+
 
 
 Route::prefix('prod')->group(function () {
@@ -46,10 +39,10 @@ Route::prefix('prod')->group(function () {
 });
 
 //adm
-Route::post('/registerCategory', [CategoryController::class, 'createCategory']);
+
 Route::post('/registerColor', [ColorController::class, 'createColor']);
 Route::post('/registerSize', [SizeController::class, 'createSize']);
-Route::get('/categories', [CategoryController::class, 'fetchCategory']);
+
 Route::get('/colors', [ColorController::class, 'fetchColor']);
 Route::get('/sizes', [SizeController::class, 'fetchSize']);
 // Route::get('/recomendatation/{id}', [ProductController::class, 'recomendation']);
@@ -78,6 +71,3 @@ Route::prefix('mcp')->group(function () {
 Route::prefix('checkout')->group(function () {
     Route::post('/useCupom', [CupomController::class, 'useCupom']);
 })->middleware('auth:sanctum');
-
-
-Route::post('/changeStatus', [orderController::class, 'changeOrderStatus'])->middleware('auth:sanctum');
