@@ -41,6 +41,8 @@ class orderController extends Controller
 
     $preference = $this->mcpService->createPreferenceService($validated['items'], $sumPrice, $newOder->id);
 
+
+
     return response()->json([
       "total" => $preference['total'],
       "orderId" => $preference['orderId'],
@@ -64,11 +66,15 @@ class orderController extends Controller
 
   public function fetchOrderUser()
   {
-    return $this->orderService->fetchOrderUser();
+      return $this->orderService->fetchOrderUser();
   }
 
   public function deleteOrderExpired()
   {
-    return $this->orderService->deleteOrderExpired();
+    $order = Order::where('status', 'pending')->where('created_at', '<', now()->subMinutes(30))->get();
+
+    foreach ($order as $ord) {
+      $ord->delete();
+    }
   }
 }

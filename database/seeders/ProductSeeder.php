@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         // Cria 10 produtos via Factory
-        Product::factory()->count(10)->create()->each(function ($product) {
+        Product::factory()->count(30)->create()->each(function ($product) {
 
             // Associa 1 a 3 cores existentes
             $colorIds = Colors::inRandomOrder()->take(rand(1, 3))->pluck('id');

@@ -79,6 +79,8 @@ class OrderService
                 'items'          => $infoproducts
             ];
         }
+
+          return response()->json($orderComplet);
     }
 
     public function orderById($orderId)
