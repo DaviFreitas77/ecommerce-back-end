@@ -11,21 +11,13 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductShoppingController;
 use App\Http\Controllers\shoppingCartController;
 use App\Http\Controllers\SizeController;
-use App\Http\Controllers\stripeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZIPCodeController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->get('/auth/me', function (Request $request) {
-    return response()->json($request->user());
-});
-
-Route::prefix('auth')->group(function () {
-    Route::post('/register', [UserController::class, 'createUser']);
-    Route::post('/login', [UserController::class, 'login']);
-    Route::post('/logout', [UserController::class, 'logout']);
-});
+// Route::middleware('auth:sanctum')->get('/auth/me', function (Request $request) {
+//   return response()->json($request->user());
+// });
 
 Route::prefix('user')->group(function () {
     Route::patch('/update', [UserController::class, 'updateUser']);
@@ -88,9 +80,4 @@ Route::prefix('checkout')->group(function () {
 })->middleware('auth:sanctum');
 
 
-
-
-
 Route::post('/changeStatus', [orderController::class, 'changeOrderStatus'])->middleware('auth:sanctum');
-
-// Route::post('/createPayment', [stripeController::class, 'createPayment'])->middleware('auth:sanctum');

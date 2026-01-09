@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserService
 {
@@ -29,15 +30,16 @@ class UserService
     $emailExisting = User::where("email", $credentials['email'])->first();
 
     if ($emailExisting && $emailExisting->password === null) {
-      return response()->json([
-        'message' => 'Este e-mail está vinculado a um login com Google.'
-      ], 403);
+      abort(403, 'Este e-mail está vinculado a um login com Google.');
     }
 
     if (!Auth::attempt($credentials)) {
-      abort(401, "credenciais invalidas");
-    }
+      abort(401, 'Credenciais inválidas');
+    };
+    
+    
 
+    request()->session()->regenerate();
     $user = Auth::user();
 
     return $user;
