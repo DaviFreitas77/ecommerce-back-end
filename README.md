@@ -1,8 +1,8 @@
-# 🛒 E-commerce Back-end API
+#  E-commerce Back-end API
 
 Bem-vindo ao repositório da API de E-commerce! Este projeto é um back-end robusto desenvolvido em **Laravel**, projetado para fornecer toda a infraestrutura necessária para uma loja virtual moderna, incluindo gerenciamento de produtos, carrinho de compras, pedidos e integração de pagamentos.
 
-## 🚀 Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 -   **Linguagem:** PHP 8.x
 -   **Framework:** Laravel
@@ -12,29 +12,29 @@ Bem-vindo ao repositório da API de E-commerce! Este projeto é um back-end robu
 -   **Documentação da API:** Dedoc Scramble
 -   **Cliente HTTP:** Guzzle (Integração ViaCEP)
 
-## ✨ Funcionalidades Principais
+##  Funcionalidades Principais
 
-### 👤 Usuários e Autenticação
+###  Usuários e Autenticação
 
 -   Registro e Login de usuários.
 -   Autenticação via token
 -   Integração com **Google OAuth**.
 -   Gerenciamento de perfil e endereços.
 
-### 📦 Produtos e Catálogo
+###  Produtos e Catálogo
 
 -   CRUD de Produtos, Categorias, Cores e Tamanhos.
 -   Upload e gerenciamento de imagens de produtos.
 -   Busca de produtos e recomendações.
 -   Controle de variações (Cor/Tamanho).
 
-### 🛒 Carrinho de Compras
+###  Carrinho de Compras
 
 -   Adicionar/Remover itens.
 -   Sincronização de carrinho (útil para manter o estado entre dispositivos).
 -   Cálculo automático de totais.
 
-### 💳 Pagamentos e Pedidos
+###  Pagamentos e Pedidos
 
 -   **Integração com Mercado Pago:**
     -   Pagamentos via **Pix**.
@@ -44,17 +44,17 @@ Bem-vindo ao repositório da API de E-commerce! Este projeto é um back-end robu
 -   Histórico de pedidos do usuário.
 -   Limpeza automática de pedidos expirados.
 
-### 🎫 Cupons de Desconto
+###  Cupons de Desconto
 
 -   Criação e gerenciamento de cupons.
 -   Validação de validade e limite de uso.
 -   Cupons de primeira compra.
 
-### 📍 Endereços
+###  Endereços
 
 -   Integração com a API **ViaCEP** para preenchimento automático de endereços pelo CEP.
 
-## ⚙️ Configuração e Instalação
+##  Configuração e Instalação
 
 1. **Clone o repositório:**
 
@@ -107,7 +107,7 @@ php artisan serve
 ```bash
 localhost:8000/docs/api
 ```
-## 🔑 Variáveis de Ambiente Importantes
+##  Variáveis de Ambiente Importantes
 
 Certifique-se de configurar as seguintes chaves no seu arquivo `.env`:
 
