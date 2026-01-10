@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\ColorController;
-use App\Http\Controllers\CupomController;
+
 use App\Http\Controllers\logradouroController;
 use App\Http\Controllers\MCPController;
 use App\Http\Controllers\MercadoPagoWebhookController;
@@ -15,18 +14,16 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/api/category.php';
 require __DIR__ . '/api/order.php';
+require __DIR__ . '/api/color.php';
+require __DIR__ . '/api/cupom.php';
+require __DIR__ . '/api/logradouro.php'; 
+require __DIR__ . '/api/mercadoPago.php';
 
 Route::prefix('user')->group(function () {
     Route::patch('/update', [UserController::class, 'updateUser']);
 })->middleware('auth:sanctum');
 
-Route::prefix("logradouro")->group(function () {
-    Route::post('/checkZipCode', [ZIPCodeController::class, 'CheckZipCode']);
-    Route::post('/logradouro', [logradouroController::class, 'createLogradouro']);
-    Route::get('/logradouroUser', [logradouroController::class, 'fetchLogradouro']);
-    Route::get('/myLogradouro', [ZIPCodeController::class, 'myAdress']);
-    Route::delete('/deleteLogradouro/{id}', [ZIPCodeController::class, 'deleteAdress']);
-})->middleware('auth:sanctum');
+
 
 
 
@@ -40,15 +37,15 @@ Route::prefix('prod')->group(function () {
 
 //adm
 
-Route::post('/registerColor', [ColorController::class, 'createColor']);
+
 Route::post('/registerSize', [SizeController::class, 'createSize']);
 
-Route::get('/colors', [ColorController::class, 'fetchColor']);
+
 Route::get('/sizes', [SizeController::class, 'fetchSize']);
 // Route::get('/recomendatation/{id}', [ProductController::class, 'recomendation']);
 Route::delete('delProduct/{id}', [ProductController::class, 'delProduct']);
 Route::post('/registerProduct', [ProductController::class, 'createProduct']);
-Route::post('/createCupom', [CupomController::class, 'createCupom']);
+
 
 
 
@@ -57,17 +54,4 @@ Route::prefix('shoppingCart')->group(function () {
     Route::post('/sync', [ProductShoppingController::class, 'syncCart']);
     Route::get('/getCart', [ProductShoppingController::class, 'getCart']);
     Route::get('/getShoppingCart', [shoppingCartController::class, 'shoppingCart']);
-})->middleware('auth:sanctum');
-
-
-Route::prefix('mcp')->group(function () {
-    Route::post('/createPreference', [MCPController::class, 'createPreference']);
-    Route::post('/proccessPayment', [MCPController::class, 'proccessPayment']);
-    Route::post('/proccessPaymentPix', [MCPController::class, 'proccessPaymentPix']);
-    Route::post('/webhook', [MercadoPagoWebhookController::class, 'handle']);
-})->middleware('auth:sanctum');
-
-
-Route::prefix('checkout')->group(function () {
-    Route::post('/useCupom', [CupomController::class, 'useCupom']);
 })->middleware('auth:sanctum');

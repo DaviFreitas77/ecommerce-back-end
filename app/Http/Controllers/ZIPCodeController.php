@@ -26,11 +26,5 @@ class ZIPCodeController extends Controller
     }
 
 
-    public function myAdress() {
-        return $this->adressService->adressByUser();
-    }
-
-    public function deleteAdress($id){
-        return $this->adressService->deleteAdressById($id);
-    }
+    
 }
