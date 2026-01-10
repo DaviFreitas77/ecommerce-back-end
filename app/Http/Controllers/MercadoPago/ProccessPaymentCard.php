@@ -4,12 +4,14 @@ namespace App\Http\Controllers\MercadoPago;
 
 use App\Http\Controllers\Controller;
 use App\Http\Services\MCPService;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Request;
 
+#[Group('MercadoPago')]
 class ProccessPaymentCard extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Process payment card
      */
 
     public function __construct(private MCPService $mcpService)

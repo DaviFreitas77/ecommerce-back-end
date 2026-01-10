@@ -14,6 +14,7 @@ use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\Exceptions\MPApiException;
+use Illuminate\Http\Response;
 
 MercadoPagoConfig::setAccessToken(env('MERCADO_PAGO_ACCESS_TOKEN'));
 
@@ -57,7 +58,7 @@ class MCPService
                 "orderId" => $orderId
             ];
         } catch (ErrorException $e) {
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()],Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -138,12 +139,12 @@ class MCPService
             return response()->json([
                 'payment' => $payment,
                 'numberOrder' => $numberOrder->number_order
-            ]);
+            ],Response::HTTP_OK);
         } catch (MPApiException $e) {
             return response()->json([
                 'status' => $e->getApiResponse()->getStatusCode(),
                 'error'  => $e->getApiResponse()->getContent(),
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

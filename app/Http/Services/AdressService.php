@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Models\Logradouro;
 use ErrorException;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AdressService
@@ -25,7 +26,7 @@ class AdressService
       $logradouro->fk_user = $idUser;
       $logradouro->save();
 
-      return response()->json(['id' => $logradouro->id]);
+      return response()->json(['id' => $logradouro->id],Response::HTTP_CREATED);
     } catch (ErrorException $e) {
       return response()->json($e->getMessage());
     }
@@ -48,13 +49,13 @@ class AdressService
     if (!$adress) {
       return response()->json([
         'message' => 'Endereço não encontrado.'
-      ], 404);
+      ], Response::HTTP_NOT_FOUND);
     }
 
     $adress->delete();
 
     return response()->json([
       'message' => 'Endereço deletado com sucesso.'
-    ]);
+    ],Response::HTTP_OK);
   }
 }

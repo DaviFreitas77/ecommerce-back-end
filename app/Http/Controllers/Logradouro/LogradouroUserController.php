@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Logradouro;
 
 use App\Http\Controllers\Controller;
 use App\Http\Services\AdressService;
-use Illuminate\Http\Request;
+use Dedoc\Scramble\Attributes\Group;
 
+
+
+#[Group('Logradouro')]
 class LogradouroUserController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * get adress by user
      */
 
   public function __construct(private AdressService $adressService)

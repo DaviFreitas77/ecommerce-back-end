@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Models\CupomUser;
 use App\Models\DiscountCupom;
 use App\Models\OrderItems;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class CupomService
@@ -24,14 +25,14 @@ class CupomService
         $newCupom->limitUse = $data['limitUse'];
         $newCupom->save();
 
-        return response()->json(['message' => 'Cupom criado com sucesso']);
+        return response()->json(['message' => 'Cupom criado com sucesso'],Response::HTTP_CREATED);
     }
 
 
     public function listAllCupom()
     {
         $cupons = DiscountCupom::all();
-        return response()->json($cupons);
+        return response()->json($cupons,Response::HTTP_OK);
     }
 
 
@@ -39,22 +40,22 @@ class CupomService
     {
         $cupom = DiscountCupom::find($id);
         if (!$cupom) {
-            return response()->json(['message' => 'Cupom não encontrado'], 404);
+            return response()->json(['message' => 'Cupom não encontrado'], Response::HTTP_NOT_FOUND);
         }
 
         $cupom->delete();
-        return response()->json(['message' => 'Cupom deletado com sucesso']);
+        return response()->json(['message' => 'Cupom deletado com sucesso'],Response::HTTP_OK);
     }
 
     public function deleteUsedCupom($idOrder)
     {
         $usedCupom = CupomUser::where('fk_order', $idOrder)->first();
         if (!$usedCupom) {
-            return response()->json(['message' => 'Cupom usado não encontrado'], 404);
+            return response()->json(['message' => 'Cupom usado não encontrado'], Response::HTTP_NOT_ACCEPTABLE);
         }
 
         $usedCupom->delete();
-        return response()->json(['message' => 'Cupom usado deletado com sucesso']);
+        return response()->json(['message' => 'Cupom usado deletado com sucesso'],Response::HTTP_OK);
     }
 
     public function getCupomById($id)

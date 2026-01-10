@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\MercadoPago;
 
 use App\Http\Controllers\Controller;
+use Dedoc\Scramble\Attributes\Group;
 use ErrorException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
 
+
+#[Group('MercadoPago')]
 class ProccessPaymentPix extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Process payment PIX
      */
     public function __invoke(Request $request)
     {
@@ -29,9 +33,9 @@ class ProccessPaymentPix extends Controller
                 ]
             ], $request_options);
 
-            return response()->json($payment);
+            return response()->json($payment, Response::HTTP_OK);
         } catch (ErrorException $e) {
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

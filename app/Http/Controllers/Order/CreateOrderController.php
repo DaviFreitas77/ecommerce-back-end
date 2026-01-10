@@ -9,6 +9,7 @@ use App\Http\Services\OrderItemsService;
 use App\Http\Services\OrderService;
 use App\Http\Services\ProductService;
 use Dedoc\Scramble\Attributes\Group;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -52,6 +53,6 @@ class CreateOrderController extends Controller
             "total" => $preference['total'],
             "orderId" => $preference['orderId'],
             "preference" => $preference
-        ]);
+        ],Response::HTTP_CREATED);
     }
 }

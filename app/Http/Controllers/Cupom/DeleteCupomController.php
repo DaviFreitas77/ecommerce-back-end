@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Cupom;
 use App\Http\Controllers\Controller;
 use App\Http\Services\CupomService;
 use Dedoc\Scramble\Attributes\Group;
-use Illuminate\Http\Request;
+
 
 
 #[Group('Cupom')]
