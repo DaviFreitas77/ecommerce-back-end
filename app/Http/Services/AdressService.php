@@ -4,8 +4,10 @@ namespace App\Http\Services;
 
 use App\Models\Logradouro;
 use ErrorException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class AdressService
 {
@@ -58,4 +60,13 @@ class AdressService
       'message' => 'Endereço deletado com sucesso.'
     ],Response::HTTP_OK);
   }
+
+
+  public function CheckZipCode($data)
+    {
+       
+        $response = Http::get('https://viacep.com.br/ws/' . $data['zipCode'] . '/json/');
+
+        return response()->json($response->json());
+    }
 }

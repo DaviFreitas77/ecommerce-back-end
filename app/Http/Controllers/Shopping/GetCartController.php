@@ -1,41 +1,32 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Shopping;
 
-use App\Http\Services\ShoppingCartService;
+use App\Http\Controllers\Controller;
 use App\Models\ProductShoppingCart;
 use App\Models\ShoppingCart;
+use Dedoc\Scramble\Attributes\Group;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
-class shoppingCartController extends Controller
+#[Group('Shopping Cart')]
+class GetCartController extends Controller
 {
-
-     public function __construct(private ShoppingCartService $shoppingCartService) {
-        $this->shoppingCartService = $shoppingCartService;
-    }
-
-    public function createShoppingCart($iduser)
+    /**
+     * Get cart.
+     */
+    public function __invoke()
     {
-        $existingCart = ShoppingCart::where('fkUser', $iduser)->first();
+        $idUser = Auth::user()->id;
 
-        if (!$existingCart) {
-            $shoppingCart = new ShoppingCart;
-            $shoppingCart->fkUser = $iduser;
-            $shoppingCart->totalPrice = 0;
-            $shoppingCart->save();
-            return $shoppingCart->id;
+        $shoppingCart = ShoppingCart::where('fkUser', $idUser)->first();
+        if (!$shoppingCart) {
+            return response()->json(['message' => 'carrinho não encontrado'], 200);
         }
 
-        return $existingCart->id;
-    }
+        $idShoppingCart = $shoppingCart->id;
 
-
-    public function shoppingCart()
-    {
-
-        $idUser = Auth::user()->id;
-        $shoppingCart = ShoppingCart::where('fkUser', $idUser)->first();
-        $productsCart = ProductShoppingCart::where('fkShoppingCart', $shoppingCart->id)
+        $productsCart = ProductShoppingCart::where('fkShoppingCart', $idShoppingCart)
             ->join('products', 'product_shopping_cart.fkProduct', '=', 'products.id')
             ->join('product_colors', 'product_shopping_cart.fkColor', '=', 'product_colors.id')
             ->join('colors', 'product_colors.fkColor', '=', 'colors.id')
@@ -64,21 +55,6 @@ class shoppingCartController extends Controller
             )
             ->get();
 
-
-        if (!$shoppingCart) {
-            return response()->json(['message' => "carrinnho não encontrado"], 400);
-        }
-        return response()->json([
-            'total' => $shoppingCart->totalPrice,
-            'products' => $productsCart
-
-        ]);
+        return response()->json($productsCart, Response::HTTP_OK);
     }
-
-    public function deleteShoppingCart($idUser)
-    {
-        $this->shoppingCartService->deleteCartUser($idUser);
-        return response()->json(['message' => 'carrinho deletado']);
-    }
-
 }

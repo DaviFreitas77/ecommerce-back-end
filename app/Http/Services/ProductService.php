@@ -144,44 +144,7 @@ class ProductService
         return response()->json($result);
     }
 
-    public function recomendation($id)
-    {
-        $product = Product::with(['variations'])->where('id', '=', $id)->first();
-
-        $category = $product->category->id;
-
-        $products = Product::with('variations')->where('fkCategory', $category)->where("id", "!=", $id)->limit(6)->get();
-
-        if ($products->isEmpty()) {
-            $allProduct = Product::with("variations")->limit(6)->get();
-            $result = $allProduct->map(function ($prod) {
-                return  [
-                    'id' => $prod->id,
-                    "name" => $prod->name,
-                    "price" => $prod->price,
-                    "lastPrice" => $prod->lastPrice,
-                    "image" => $prod->variations->first()->image,
-                    'category' => $prod->category,
-
-                ];
-            });
-            return response()->json($result);
-        }
-        $result = $products->map(function ($prod) {
-            return  [
-                'id' => $prod->id,
-                "name" => $prod->name,
-                "price" => $prod->price,
-                "lastPrice" => $prod->lastPrice,
-                "image" => $prod->variations->first()->image,
-                'category' => $prod->category,
-
-            ];
-        });
-
-        return response()->json($result);
-    }
-
+  
     public function searchProduct($search)
     {
         $products = Product::where('name', 'like', '%' . $search . '%')
