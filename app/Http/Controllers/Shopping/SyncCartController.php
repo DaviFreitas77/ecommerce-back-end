@@ -10,7 +10,7 @@ use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Log;
 
 #[Group('Shopping Cart')]
 class SyncCartController extends Controller
@@ -21,16 +21,17 @@ class SyncCartController extends Controller
     public function __invoke(SyncCartRequest $request)
     {
         $data = $request->validated();
-        
-         $idUser = Auth::user()->id;
-        $shoppingCart = ShoppingCart::where('fkUser', $idUser)->first();
 
-        if (!$shoppingCart) {
-            $shoppingCart = ShoppingCart::create([
-                'fkUser' => $idUser,
-                'totalPrice' => 0,
+        Log::info($data);
+
+        if (empty($data['products'])) {
+            return response()->json([
+                'message' => 'Carrinho sincronizado!',
+                'total' => 0
             ]);
         }
+        $idUser = Auth::user()->id;
+        $shoppingCart = ShoppingCart::where('fkUser', $idUser)->first();
 
         // Apaga os itens antigos
         ProductShoppingCart::where('fkShoppingCart', $shoppingCart->id)->delete();

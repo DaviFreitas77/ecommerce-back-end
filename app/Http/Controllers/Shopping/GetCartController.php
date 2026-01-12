@@ -21,7 +21,17 @@ class GetCartController extends Controller
 
         $shoppingCart = ShoppingCart::where('fkUser', $idUser)->first();
         if (!$shoppingCart) {
-            return response()->json(['message' => 'carrinho não encontrado'], 200);
+
+            if (!$shoppingCart) {
+                $shoppingCart = ShoppingCart::create([
+                    'fkUser' => $idUser,
+                    'totalPrice' => 0,
+                ]);
+
+                return response()->json([
+                    'productsCart' => [],
+                ], Response::HTTP_OK);
+            }
         }
 
         $idShoppingCart = $shoppingCart->id;
@@ -55,6 +65,6 @@ class GetCartController extends Controller
             )
             ->get();
 
-        return response()->json($productsCart, Response::HTTP_OK);
+        return response()->json(["productsCart" => $productsCart], Response::HTTP_OK);
     }
 }
