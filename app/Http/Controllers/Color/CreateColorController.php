@@ -9,7 +9,7 @@ use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Response;
 
 #[Group('colors')]
-class createColorController extends Controller
+class CreateColorController extends Controller
 {
     /**
      * Create color
