@@ -18,7 +18,6 @@ class GoogleCallbackController extends Controller
      */
     
 
-    //se siga se curte programação
     public function __construct(private UserService $userService)
     {
         $this->userService = $userService;
