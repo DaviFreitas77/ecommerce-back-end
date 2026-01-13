@@ -10,7 +10,6 @@ use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 #[Group('Shopping Cart')]
 class SyncCartController extends Controller
@@ -22,7 +21,7 @@ class SyncCartController extends Controller
     {
         $data = $request->validated();
 
-        Log::info($data);
+
 
         if (empty($data['products'])) {
             return response()->json([

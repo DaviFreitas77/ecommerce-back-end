@@ -17,6 +17,8 @@ class GoogleCallbackController extends Controller
      * Callback Google OAuth.
      */
     
+
+    //se siga se curte programação
     public function __construct(private UserService $userService)
     {
         $this->userService = $userService;
