@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\auth\GoogleCallbackController;
-use App\Http\Controllers\auth\GoogleRedirectController;
-use App\Http\Controllers\auth\LoginController;
-use App\Http\Controllers\auth\LogoutController;
-use App\Http\Controllers\auth\ProfileController;
-use App\Http\Controllers\auth\RegisterController;
+use App\Http\Controllers\Auth\GoogleCallbackController;
+use App\Http\Controllers\Auth\GoogleRedirectController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\Auth\RegisterController;
 
 use Illuminate\Support\Facades\Route;
 
