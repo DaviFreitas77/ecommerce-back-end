@@ -23,7 +23,7 @@ class LoginController extends Controller
     }
     public function __invoke(LoginRequest $request)
     {
-       $credentials = $request->validated();
+        $credentials = $request->validated();
 
         $user = User::where('email', $credentials['email'])->first();
 
@@ -38,10 +38,11 @@ class LoginController extends Controller
                 'message' => 'Credenciais inválidas'
             ], Response::HTTP_UNAUTHORIZED);
         }
-    $request->session()->regenerate();
+        $user = Auth::user();
+        $request->session()->regenerate();
         return response()->json([
             'message' => 'Login efetuado com sucesso',
-            'user' => Auth::user(),
+            'user' => $user
         ], Response::HTTP_OK);
     }
 }
