@@ -14,9 +14,11 @@ class ProfileController extends Controller
     /**
      * Dados do usuário.
      */
-    public function __invoke()
+    public function __invoke(Request $request)
     {
-        $user = Auth::user();
-        return response()->json($user, Response::HTTP_OK);
+         return response()->json(
+            $request->user(),
+            Response::HTTP_OK
+        );
     }
 }

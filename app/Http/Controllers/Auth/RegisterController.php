@@ -28,10 +28,7 @@ class RegisterController extends Controller
 
         $user = $this->userService->registerUser($data['email'], $data['password'], $data['name'], $data['lastName'], $data['tel']);
 
-        Auth::login($user);
-        $request->session()->regenerate();
-
-
+        Auth::guard('web')->login($user);
         return response()->json([
             "message" => "conta criada com sucesso",
             'user' => $user,

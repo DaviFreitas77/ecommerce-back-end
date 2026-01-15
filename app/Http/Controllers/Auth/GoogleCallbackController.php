@@ -16,7 +16,7 @@ class GoogleCallbackController extends Controller
     /**
      * Callback Google OAuth.
      */
-    
+
 
     public function __construct(private UserService $userService)
     {
@@ -25,7 +25,7 @@ class GoogleCallbackController extends Controller
     public function __invoke(Request $request)
     {
         $googleUser = Socialite::driver('google')->user();
-        
+
         $email = $googleUser->email;
 
         $user = User::where('email', $email)->first();

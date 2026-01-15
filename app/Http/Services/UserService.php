@@ -25,25 +25,7 @@ class UserService
     return $user;
   }
 
-  public function loginUser(array $credentials)
-  {
-    $emailExisting = User::where("email", $credentials['email'])->first();
 
-    if ($emailExisting && $emailExisting->password === null) {
-      abort(403, 'Este e-mail está vinculado a um login com Google.');
-    }
-
-    if (!Auth::attempt($credentials)) {
-      abort(401, 'Credenciais inválidas');
-    };
-    
-    
-
-    request()->session()->regenerate();
-    $user = Auth::user();
-
-    return $user;
-  }
 
   public function updateUser(array $data)
   {

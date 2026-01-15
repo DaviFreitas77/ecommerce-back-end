@@ -8,6 +8,7 @@ use App\Http\Services\UserService;
 use App\Models\User;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 #[Group('Auth')]
 class LoginController extends Controller
@@ -22,22 +23,25 @@ class LoginController extends Controller
     }
     public function __invoke(LoginRequest $request)
     {
-        $credentials = $request->validated();
+       $credentials = $request->validated();
 
-        $emailExisting = User::where("email", $request->email)->first();
+        $user = User::where('email', $credentials['email'])->first();
 
-        if ($emailExisting && $emailExisting->password === null) {
+        if ($user && $user->password === null) {
             return response()->json([
                 'message' => 'Este e-mail está vinculado a um login com Google.'
             ], Response::HTTP_FORBIDDEN);
         }
 
-
-        $user = $this->userService->loginUser($credentials);
+        if (!Auth::guard('web')->attempt($credentials)) {
+            return response()->json([
+                'message' => 'Credenciais inválidas'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
 
         return response()->json([
-            "message" => "login efetuado com sucesso",
-            'user' => $user,
+            'message' => 'Login efetuado com sucesso',
+            'user' => Auth::user(),
         ], Response::HTTP_OK);
     }
 }
