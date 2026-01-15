@@ -38,7 +38,7 @@ class LoginController extends Controller
                 'message' => 'Credenciais inválidas'
             ], Response::HTTP_UNAUTHORIZED);
         }
-
+    $request->session()->regenerate();
         return response()->json([
             'message' => 'Login efetuado com sucesso',
             'user' => Auth::user(),
