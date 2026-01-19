@@ -35,7 +35,7 @@ Route::prefix('auth')->group(function () {
   Route::get('google/redirect', GoogleRedirectController::class);
   Route::get('google/callback', GoogleCallbackController::class);
   
-  Route::middleware('auth:web')->group(function(){
+  Route::middleware('auth:sanctum')->group(function(){
     Route::post('/logout', LogoutController::class);
     Route::get('/profile',ProfileController::class);
   });
