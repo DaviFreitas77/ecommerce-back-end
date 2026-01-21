@@ -1,6 +1,6 @@
 #  E-commerce Back-end API
 
-Bem-vindo ao repositório da API de E-commerce! Este projeto é um back-end robusto desenvolvido em **Laravel**, projetado para fornecer toda a infraestrutura necessária para uma loja virtual moderna, incluindo gerenciamento de produtos, carrinho de compras, pedidos e integração de pagamentos.
+ Este projeto é um back-end robusto desenvolvido em **Laravel**, projetado para fornecer toda a infraestrutura necessária para uma loja virtual moderna, incluindo gerenciamento de produtos, carrinho de compras, pedidos e integração de pagamentos.
 
 ##  Tecnologias Utilizadas
 
