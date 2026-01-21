@@ -9,9 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
-
-
-
+use App\Http\Controllers\Upload\UploadController;
 
 require __DIR__ . '/api/category.php';
 require __DIR__ . '/api/order.php';
@@ -44,3 +42,8 @@ Route::prefix('auth')->group(function () {
 Route::prefix('user')->group(function () {
     Route::patch('/update', UpdateUserController::class);
 })->middleware('auth:sanctum');
+
+
+
+
+Route::post('/upload-image', UploadController::class);
