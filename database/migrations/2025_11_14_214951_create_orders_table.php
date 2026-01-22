@@ -21,7 +21,6 @@ return new class extends Migration
                 'completed',
                 'canceled',
                 'preparando',
-                'entregue',
             ])->default('pending');
             $table->decimal('total', 10, 2);
             $table->string('payment_method')->nullable();

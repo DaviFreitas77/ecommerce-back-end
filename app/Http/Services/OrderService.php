@@ -97,4 +97,12 @@ class OrderService
             $ord->delete();
         }
     }
+
+    public function fetchAllOrders()
+    {
+        $orders = Order::all();
+        return $orders;
+    }
+
+    
 }

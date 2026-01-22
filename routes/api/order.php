@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Category\ListCategoryController;
 use App\Http\Controllers\Order\CreateOrderController;
 use App\Http\Controllers\Order\LatestOrderUserController;
 use App\Http\Controllers\Order\ListOrderUserController;

@@ -10,16 +10,15 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 
 {
-    use HasApiTokens, HasFactory, Notifiable;
-    protected $table = "users";
-    protected $fillable = ["name", 'email', 'password','tel','lastName'.'role'];
-    public $timestamps = false;
+  use HasApiTokens, HasFactory, Notifiable;
+  protected $table = "users";
+  protected $fillable = ["name", 'email', 'password', 'tel', 'lastName' . 'role'];
+  public $timestamps = false;
 
 
-      protected $hidden = [
-        'password',
-        'id',
-        
-    ];
+  protected $hidden = [
+    'password',
+    'id',
 
+  ];
 }
