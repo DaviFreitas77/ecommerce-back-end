@@ -22,4 +22,8 @@ class Order extends Model
     {
         return $this->belongsTo(DiscountCupom::class, 'fk_cupom');
     }
+
+    protected $casts = [
+    'created_at' => 'datetime',
+];
 }
