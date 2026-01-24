@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Upload;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Dedoc\Scramble\Attributes\Group;
 
+#[Group('Adm')]
 class UploadController extends Controller
 {
     /**

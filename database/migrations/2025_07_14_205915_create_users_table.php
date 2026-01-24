@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('lastName');
             $table->string('tel')->nullable();
             $table->string('role')->default('user'); 
+            $table->boolean('receive_newsletter')->default(false);
         });
     }
 
