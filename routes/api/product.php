@@ -15,10 +15,6 @@ Route::get('/productsByCategory/{id}',ListProductByCategoryController::class);
   Route::get('/product/{id}',ListProductByIdController::class);
   Route::get('/search/{search}',SearchProductController::class);
   
-  Route::middleware('is_admin')->group(function(){
-    
-    Route::delete('delProduct/{id}',DeleteProductController::class);
-    Route::post('/registerProduct',CreateProductController::class);
-  });
+
   
 });

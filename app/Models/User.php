@@ -19,7 +19,7 @@ class User extends Authenticatable
   protected $hidden = [
     'password',
     'id',
-    'receive_newsletter'
+
 
   ];
 }

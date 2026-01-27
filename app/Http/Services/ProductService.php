@@ -81,6 +81,8 @@ class ProductService
             "price" => $product->price,
             "lastPrice" => $product->lastPrice,
             'category' => $product->category->id,
+
+            'categoryName' => $product->category->name,
             'sizes' => $product->sizes->map(function ($size) {
                 return [
                     'id' => $size->id,

@@ -29,7 +29,7 @@ class billingController extends Command
      */
     public function handle()
     {
-        $ordersCompleted = Order::where('status', 'completed')->get();
+        $ordersCompleted = Order::where('status', 'preparando')->get();
 
 
         $billingTotal = $ordersCompleted->sum('total');
