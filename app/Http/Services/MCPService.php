@@ -2,14 +2,13 @@
 
 namespace App\Http\Services;
 
-use App\Mail\mailOrderCreated;
+use App\Jobs\SendOrderCreatedEmailJob;
 use App\Models\Order;
 use App\Models\OrderItems;
 use App\Models\Product;
 use MercadoPago\Client\Preference\PreferenceClient;
 use ErrorException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
@@ -124,8 +123,8 @@ class MCPService
             })->toArray();
 
             if ($payment->status === "approved") {
-                Mail::to($emailUser)->send(new mailOrderCreated($nameUser, $numberOrder->number_order, $productsData));
-
+                SendOrderCreatedEmailJob::dispatch($emailUser,$nameUser,$numberOrder->number_order, $productsData);
+            
                 $this->orderService->changeOrderStatus('preparando', $payment->external_reference);
 
                 $this->orderService->updatePaymentOrderService($payment->payment_type_id, $payment->external_reference);
