@@ -2,22 +2,20 @@
 
 namespace App\Notifications;
 
-use App\Mail\MailOrderCreated;
+use App\Mail\NewOrderMail;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderCreatedOrderNotification extends Notification 
+class NewOrderNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(
-    public string $name,
-    public string $numberOrder,
-    public array $products
-    )
+    public function __construct(public string $name,public string $numberOrder,public array $products,public string $telOrder)
     {
         //
     }
@@ -35,10 +33,10 @@ class OrderCreatedOrderNotification extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailOrderCreated
+    public function toMail(object $notifiable): NewOrderMail
     {
-        return (new MailOrderCreated($this->name, $this->numberOrder, $this->products))->to($notifiable->email);
-                   
+        return (new NewOrderMail($this->name, $this->numberOrder, $this->products,$this->telOrder))->to($notifiable->email);
+                  
     }
 
     /**

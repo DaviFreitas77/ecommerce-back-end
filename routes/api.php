@@ -12,6 +12,8 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Upload\UploadController;
 use App\Http\Controllers\User\RegisterNewLetterController;
+use App\Mail\MailOrderCreated;
+use Illuminate\Support\Facades\Mail;
 
 require __DIR__ . '/api/category.php';
 require __DIR__ . '/api/order.php';
@@ -47,7 +49,12 @@ Route::prefix('user')->group(function () {
   Route::patch('/registerNewsLetter', RegisterNewLetterController::class);
 })->middleware('auth:sanctum');
 
-
-
-
 Route::post('/upload-image', UploadController::class);
+
+
+
+Route::get('/test-email', function () {
+    Mail::to('freitaadavi20@gmail.com')->send(new MailOrderCreated('davi','1234',['a','a','a']));
+
+    return 'Email enviado com sucesso';
+});

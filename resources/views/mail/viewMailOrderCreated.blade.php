@@ -2,168 +2,215 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagamento Confirmado - Bazar Virtual</title>
-    <style>
-        body {
-            background-color: #f6f9fc;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .wrapper {
-            width: 100%;
-            table-layout: fixed;
-            background-color: #f6f9fc;
-            padding-bottom: 40px;
-            padding-top: 40px;
-
-        }
-
-        .main-table {
-            background-color: #ffffff;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 600px;
-            border-spacing: 0;
-            color: #4a4a4a;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .header {
-            background-color: #A2785A;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .header h1 {
-            color: #ffffff;
-            margin: 0;
-            font-size: 18px;
-            letter-spacing: 1px;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .greeting {
-            font-size: 18px;
-            font-weight: bold;
-            color: #1f2937;
-        }
-
-        .status {
-            background-color: #dcfce7;
-            color: #166534;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .order-card {
-            background-color: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .order-title {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #9ca3af;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .order-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
-
-        .order-item:last-child {
-            border-bottom: none;
-        }
-
-        .label {
-            font-weight: 600;
-            color: #4b5563;
-        }
-
-        .value {
-            color: #111827;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 12px;
-            color: #9ca3af;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Pedido Confirmado - Bazar Virtual</title>
 </head>
 
-<body>
-    <div class="wrapper">
-        <table class="main-table">
-            <tr>
-                <td class="header">
-                    <h1>Bazar virtual</h1>
-                </td>
-            </tr>
+<body style="
+  margin:0;
+  padding:0;
+  background-color:#f6f9fc;
+  font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+">
 
-            <tr>
-                <td class="content">
-                    <p class="greeting">Olá, {{ $name }}!</p>
-                    <p>Recebemos o pagamento do seu pedido com sucesso.
-                        Agora estamos preparando tudo para o envio.</p>
+  <div style="
+  max-width:600px;
+  margin:0 auto;
+  padding:32px 24px;
+  font-family:'Segoe UI', Helvetica, Arial, sans-serif;
+  background:#ffffff;
+  color:#1f2937;
+  text-align:center;
+">
 
-                    <div class="status">
-                        ✔ Pagamento aprovado
-                    </div>
+    <!-- Logo -->
+    <p style="
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:2px;
+    margin-bottom:32px;
+  ">
+      BAZAR
+    </p>
 
-                    @foreach($products as $product)
-                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
-                        <tr>
-                            <td width="90">
-                                @if(!empty($product['image']))
-                                <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" width="80" height="110">
-                                @endif
-                            </td>
-                            <td valign="top" >
-                                <p style="margin:0; font-weight:bold; font-size:14px; color:#333;">{{ $product['name'] }}</p>
-                                <p style="margin:2px 0 0 0; font-size:13px; color:#555;">Cor: {{ $product['color'] }}</p>
-                                <p style="margin:2px 0 0 0; font-size:13px; color:#555;">Quantidade: {{ $product['quantity'] }}</p>
-                                <p style="margin:2px 0 0 0; font-size:13px; color:#555;">Preço: R$ {{ number_format($product['price'], 2, ',', '.') }}</p>
-                            </td>
-                        </tr>
-                    </table>
-                    @endforeach
+    <!-- Título -->
+    <h1 style="
+    font-size:26px;
+    font-weight:600;
+    margin-bottom:12px;
+    color:#3b2f2f;
+  ">
+      Seu pedido foi realizado
+    </h1>
+
+    <!-- Subtítulo -->
+    <p style="
+    font-size:16px;
+    font-weight:500;
+    margin-bottom:24px;
+    color:#6b4e3d;
+  ">
+      Novidades escolhidas com carinho para você
+    </p>
+
+    <!-- Texto -->
+    <p style="
+    font-size:14px;
+    line-height:1.7;
+    margin-bottom:28px;
+    color:#4b5563;
+  ">
+      {{$name}} seu pedido <strong>#650050</strong> foi confirmado.<br>
+      Em breve, peças únicas do nosso bazar chegam até você,
+      cheias de estilo e história.
+    </p>
+
+    <!-- Botão -->
+    <a href="http://localhost:5173/pedidos" style="
+    display:inline-block;
+    background:#d39b72;
+    color:#ffffff;
+    text-decoration:none;
+    padding:14px 28px;
+    border-radius:999px;
+    font-size:14px;
+    font-weight:500;
+  ">
+      Acompanhar pedido
+    </a>
+
+
+    @foreach($products as $product)
+    <table width="100%" cellpadding="0" cellspacing="0" style="
+  margin:24px 0;
+  background:#f9fafb;
+  border-radius:12px;
+  padding:16px;
+">
+      <tr>
+        <!-- Imagem -->
+        <td width="90" valign="top" style="padding-right:16px;">
+          @if(!empty($product['image']))
+          <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" width="80" height="110" style="
+            border-radius:8px;
+            object-fit:cover;
+            display:block;
+          ">
+          @endif
+        </td>
+
+        <!-- Infos -->
+        <td valign="top" style="text-align:left;">
+          <p style="
+        margin:0 0 6px 0;
+        font-size:14px;
+        font-weight:600;
+        color:#1f2937;
+      ">
+            {{ $product['name'] }}
+          </p>
+
+          <p style="margin:2px 0; font-size:13px; color:#6b7280;">
+            Cor: {{ $product['color'] }}
+          </p>
+
+          <p style="margin:2px 0; font-size:13px; color:#6b7280;">
+            Quantidade: {{ $product['quantity'] }}
+          </p>
+
+          <p style="
+        margin-top:8px;
+        font-size:14px;
+        font-weight:600;
+        color:#3b2f2f;
+      ">
+            R$ {{ number_format($product['price'], 2, ',', '.') }}
+          </p>
+        </td>
+      </tr>
+    </table>
+    @endforeach
+
+    <!-- Resumo do Pedido -->
+    <div style="
+  margin-top:32px;
+  padding:20px;
+  background:#f9fafb;
+  border-radius:12px;
+  text-align:left;
+">
+
+      <p style="
+    margin:0 0 12px 0;
+    font-size:15px;
+    font-weight:600;
+    color:#1f2937;
+  ">
+        Resumo do pedido
+      </p>
+
+      <!-- Subtotal -->
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+        <span style="font-size:13px; color:#6b7280;">Subtotal</span>
+        <span style="font-size:13px; color:#374151;">
+          R$ 150,00
+        </span>
+      </div>
 
 
 
+      <hr style="border:none; border-top:1px solid #e5e7eb; margin:12px 0;">
 
+      <!-- Total -->
+      <div style="display:flex; justify-content:space-between;">
+        <span style="
+      font-size:15px;
+      font-weight:600;
+      color:#1f2937;
+    ">
+          Total
+        </span>
 
-                </td>
-            </tr>
-
-            <tr>
-                <td class="footer">
-                    &copy; 2025 Bazar Virtual. Todos os direitos reservados.
-                </td>
-            </tr>
-        </table>
+        <span style="
+      font-size:16px;
+      font-weight:700;
+      color:#3b2f2f;
+    ">
+          R$ 150,00
+        </span>
+      </div>
     </div>
+
+    <!-- Método de Pagamento -->
+    <div style="
+  margin-top:20px;
+  padding:16px;
+  background:#ecfdf5;
+  border-radius:12px;
+  text-align:left;
+">
+
+      <p style="
+    margin:0 0 6px 0;
+    font-size:14px;
+    font-weight:600;
+    color:#065f46;
+  ">
+        Método de pagamento
+      </p>
+
+      <p style="
+    margin:0;
+    font-size:13px;
+    color:#047857;
+  ">
+        Credito
+      </p>
+
+    </div>
+  </div>
+
+
 </body>
 
 </html>

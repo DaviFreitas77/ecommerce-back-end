@@ -14,7 +14,7 @@ class billingController extends Controller
      */
     public function __invoke()
     {
-        $ordersCompleted = Order::where('status', 'completed')->get();
+        $ordersCompleted = Order::where('status', 'preparando')->get();
 
 
         $billingTotal = $ordersCompleted->sum('total');
@@ -96,6 +96,8 @@ class billingController extends Controller
             $resultCurrentTrimester = $billingCurrentTrimester > 0 ? 100 : 0;
         } else {
             $resultCurrentTrimester = ($billingCurrentTrimester - $billingTrimesterAgo) / $billingTrimesterAgo * 100;
+
+            $resultCurrentTrimester = round($resultCurrentTrimester);
         }
 
 
@@ -104,7 +106,10 @@ class billingController extends Controller
             $resultCurrentMonth = $billingMonth > 0 ? 100 : 0;
         } else {
             $resultCurrentMonth = ($billingMonth - $billingMonthAgo) / $billingMonthAgo * 100;
+
+            $resultCurrentMonth = round($resultCurrentMonth);
         }
+        
 
         //calc result current day
 
@@ -112,6 +117,8 @@ class billingController extends Controller
             $resultCurrentDay = $billingToday > 0 ? 100 : 0;
         } else {
             $resultCurrentDay = ($billingToday - $billingTodayAgo) / $billingTodayAgo * 100;
+
+            $resultCurrentDay = round($resultCurrentDay);
         }
 
        return response()->json([

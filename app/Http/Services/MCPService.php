@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Jobs\SendNewOrderEmailToAdminJob;
 use App\Jobs\SendOrderCreatedEmailJob;
 use App\Models\Order;
 use App\Models\OrderItems;
@@ -66,6 +67,8 @@ class MCPService
     {
         $nameUser = Auth::user()->name;
         $emailUser = Auth::user()->email;
+        $telUser = Auth::user()->tel;
+
 
         try {
             $data = $formdata;
@@ -124,6 +127,8 @@ class MCPService
 
             if ($payment->status === "approved") {
                 SendOrderCreatedEmailJob::dispatch($emailUser,$nameUser,$numberOrder->number_order, $productsData);
+                
+                SendNewOrderEmailToAdminJob::dispatch($nameUser,$numberOrder->number_order, $productsData,$telUser);
             
                 $this->orderService->changeOrderStatus('preparando', $payment->external_reference);
 

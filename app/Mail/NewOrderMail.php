@@ -3,27 +3,23 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
-class MailOrderCreated extends Mailable
+
+class NewOrderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public string $name;
-    public string $numberOrder;
-    public array $products;
     /**
      * Create a new message instance.
      */
-    public function __construct(string $name,string $numberOrder,array $products)
+    public function __construct( public string $name,public string $numberOrder,
+    public array $products,public string $telUser)
     {
-        $this->name = $name;
-        $this->numberOrder = $numberOrder;
-        $this->products = $products;
+       
     }
 
     /**
@@ -33,7 +29,8 @@ class MailOrderCreated extends Mailable
     {
         return new Envelope(
             from: new Address('freitaadavi20@gmail.com', 'Bazar'),
-            subject: 'Uhuul,pagamento confirmado',
+            subject: 'Uhuuul,novo pedido fresquinho!',
+            
         );
     }
 
@@ -43,8 +40,8 @@ class MailOrderCreated extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.viewMailOrderCreated',
-            with: ['name' => $this->name,'order'=>$this->numberOrder,'products'=>$this->products]
+            view: 'mail.newOrder',
+            with:['name' => $this->name,'numberOrder' => $this->numberOrder,'products' => $this->products,'tel' => $this->telUser]
         );
     }
 

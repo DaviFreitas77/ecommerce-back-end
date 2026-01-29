@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Notifications\OrderCreatedOrderNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
 
 class SendOrderCreatedEmailJob implements ShouldQueue
 {
