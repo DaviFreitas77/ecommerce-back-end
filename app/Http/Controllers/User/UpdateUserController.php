@@ -19,6 +19,7 @@ class UpdateUserController extends Controller
     public function __invoke(UpdateUserRequest $request)
     {
         $data = $request->validated();
-         return $this->userService->updateUser($data);
+        $user = $request->user()->id;
+         return $this->userService->updateUser($data,$user);
     }
 }

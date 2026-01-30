@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\MCPService;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 #[Group('MercadoPago')]
 class ProccessPaymentCard extends Controller
@@ -21,6 +22,13 @@ class ProccessPaymentCard extends Controller
 
     public function __invoke(Request $request)
     {
-        return $this->mcpService->processPayment($request->formdata, $request->order);
+        $user = $request->user();
+
+        if(!$user) {
+            return response()->json(['Não autenticado'], Response::HTTP_UNAUTHORIZED);
+        }
+
+
+        return $this->mcpService->processPayment($request->formdata, $request->order,$user);
     }
 }

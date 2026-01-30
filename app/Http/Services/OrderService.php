@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Models\Order;
 use App\Models\OrderItems;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -33,10 +34,10 @@ class OrderService
     }
 
 
-    public function updatePaymentOrderService($method, $idOrder)
+    public function updatePaymentOrderService($method, $idOrder,$userId)
     {
-        $idUser = Auth::user()->id;
-        $order = Order::where('fk_user', $idUser)->where('id', $idOrder)->first();
+   
+        $order = Order::where('fk_user', $userId)->where('id', $idOrder)->first();
         if ($order->payment_method == null) {
             $order->payment_method = $method;
 
@@ -47,16 +48,16 @@ class OrderService
 
 
 
-    public function fetchLatestOrder()
+    public function fetchLatestOrder(User $user)
     {
-        $idUser = Auth::user()->id;
+        $idUser = $user['id'];
         $orders = Order::where('fk_user', $idUser)->latest()->first();
         return $orders;
     }
 
-    public function fetchOrderUser()
+    public function fetchOrderUser($idUser)
     {
-        $idUser = Auth::user()->id;
+        
         $orderUser =  Order::where('fk_user', $idUser)->get();
 
         $orderComplet = [];

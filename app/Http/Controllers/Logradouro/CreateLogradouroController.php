@@ -22,6 +22,7 @@ class CreateLogradouroController extends Controller
     public function __invoke(StoreLogradouroRequest $request)
     {
          $data = $request->validated();
-        $this->adressService->createLogradouro($data);
+         $user = $request->user();
+        $this->adressService->createLogradouro($data,$user);
     }
 }

@@ -16,7 +16,7 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
+        $user = $request->user();
 
         if (!$user) return response()->json(['Não autenticado'], Response::HTTP_UNAUTHORIZED);
 

@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Services\OrderService;
 use Dedoc\Scramble\Attributes\Group;
-
-
+use Illuminate\Http\Request;
 
 #[Group('Order')]
 class ListOrderUserController extends Controller
@@ -20,8 +19,9 @@ class ListOrderUserController extends Controller
     {
         $this->orderService = $orderService;
     }
-    public function __invoke()
+    public function __invoke(Request $request)
     {
-        return $this->orderService->fetchOrderUser();
+        $user = $request->user()->id;
+        return $this->orderService->fetchOrderUser($user);
     }
 }

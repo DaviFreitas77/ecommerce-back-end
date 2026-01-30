@@ -28,10 +28,6 @@ require __DIR__ . '/api/adm/dashboardRoute.php';
 
 
 
-
-
-
-
 Route::prefix('auth')->group(function () {
   Route::post('/register', RegisterController::class);
   Route::post('/login', LoginController::class);
@@ -50,11 +46,3 @@ Route::prefix('user')->group(function () {
 })->middleware('auth:sanctum');
 
 Route::post('/upload-image', UploadController::class);
-
-
-
-Route::get('/test-email', function () {
-    Mail::to('freitaadavi20@gmail.com')->send(new MailOrderCreated('davi','1234',['a','a','a']));
-
-    return 'Email enviado com sucesso';
-});

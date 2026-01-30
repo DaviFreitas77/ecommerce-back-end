@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Models\CupomUser;
 use App\Models\DiscountCupom;
 use App\Models\OrderItems;
+use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,9 +66,9 @@ class CupomService
     }
 
 
-    public function useCupom(array $data)
+    public function useCupom(array $data,User $user)
     {
-        $idUser = Auth::user()->id;
+        $idUser = $user['id'];
         $userCupom = new CupomUser;
 
         $cupom = DiscountCupom::where("nameCupom", $data['nameCupom'])->first();

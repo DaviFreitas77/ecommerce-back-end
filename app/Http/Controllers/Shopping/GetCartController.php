@@ -7,7 +7,7 @@ use App\Models\ProductShoppingCart;
 use App\Models\ShoppingCart;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 #[Group('Shopping Cart')]
 class GetCartController extends Controller
@@ -15,9 +15,9 @@ class GetCartController extends Controller
     /**
      * Get cart.
      */
-    public function __invoke()
+    public function __invoke(Request $request)
     {
-        $idUser = Auth::user()->id;
+        $idUser = $request->user()->id;
 
         $shoppingCart = ShoppingCart::where('fkUser', $idUser)->first();
         if (!$shoppingCart) {

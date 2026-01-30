@@ -9,6 +9,7 @@ use App\Models\User;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 #[Group('Auth')]
 class LoginController extends Controller
@@ -27,22 +28,33 @@ class LoginController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
 
+        if (!$user) {
+            return response()->json([
+                'message' => 'Credenciais inválidas'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+
         if ($user && $user->password === null) {
             return response()->json([
                 'message' => 'Este e-mail está vinculado a um login com Google.'
             ], Response::HTTP_FORBIDDEN);
         }
 
-        if (!Auth::guard('web')->attempt($credentials)) {
+
+        if (!Hash::check($credentials['password'], $user->password)) {
             return response()->json([
                 'message' => 'Credenciais inválidas'
             ], Response::HTTP_UNAUTHORIZED);
         }
-        $user = Auth::user();
-        $request->session()->regenerate();
+    
+        $token = $user->createToken('sanctum')->plainTextToken;
+
+
         return response()->json([
             'message' => 'Login efetuado com sucesso',
-            'user' => $user
+            'user' => $user,
+            'token' => $token
         ], Response::HTTP_OK);
     }
 }

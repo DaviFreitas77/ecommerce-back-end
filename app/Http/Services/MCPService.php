@@ -7,14 +7,17 @@ use App\Jobs\SendOrderCreatedEmailJob;
 use App\Models\Order;
 use App\Models\OrderItems;
 use App\Models\Product;
+use App\Models\User;
 use MercadoPago\Client\Preference\PreferenceClient;
 use ErrorException;
+
 use Illuminate\Support\Facades\Auth;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\Exceptions\MPApiException;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 MercadoPagoConfig::setAccessToken(env('MERCADO_PAGO_ACCESS_TOKEN'));
 
@@ -58,16 +61,17 @@ class MCPService
                 "orderId" => $orderId
             ];
         } catch (ErrorException $e) {
-            return response()->json(['error' => $e->getMessage()],Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
 
-    public function processPayment($formdata, $order)
+    public function processPayment($formdata, $order,  User $user)
     {
-        $nameUser = Auth::user()->name;
-        $emailUser = Auth::user()->email;
-        $telUser = Auth::user()->tel;
+        $nameUser  = $user['name'];
+        $emailUser = $user['email'];
+        $telUser   = $user['tel'];
+        $userId    = $user['id'];
 
 
         try {
@@ -126,15 +130,15 @@ class MCPService
             })->toArray();
 
             if ($payment->status === "approved") {
-                SendOrderCreatedEmailJob::dispatch($emailUser,$nameUser,$numberOrder->number_order, $productsData);
-                
-                SendNewOrderEmailToAdminJob::dispatch($nameUser,$numberOrder->number_order, $productsData,$telUser);
-            
+                SendOrderCreatedEmailJob::dispatch($emailUser, $nameUser, $numberOrder->number_order, $productsData);
+
+                SendNewOrderEmailToAdminJob::dispatch($nameUser, $numberOrder->number_order, $productsData, $telUser);
+
                 $this->orderService->changeOrderStatus('preparando', $payment->external_reference);
 
-                $this->orderService->updatePaymentOrderService($payment->payment_type_id, $payment->external_reference);
+                $this->orderService->updatePaymentOrderService($payment->payment_type_id, $payment->external_reference,$userId);
 
-                $this->shoppingCartService->deleteCartUser(Auth::user()->id);
+                $this->shoppingCartService->deleteCartUser($userId);
             } elseif ($payment->status === "in_process") {
                 $this->orderService->changeOrderStatus('processando', $payment->external_reference);
             } else {
@@ -143,7 +147,7 @@ class MCPService
             return response()->json([
                 'payment' => $payment,
                 'numberOrder' => $numberOrder->number_order
-            ],Response::HTTP_OK);
+            ], Response::HTTP_OK);
         } catch (MPApiException $e) {
             return response()->json([
                 'status' => $e->getApiResponse()->getStatusCode(),

@@ -22,7 +22,8 @@ class LatestOrderUserController extends Controller
     public function __invoke(Request $request)
     {
 
-        $latestOrder = $this->orderService->fetchLatestOrder();
+         $user = $request->user();
+        $latestOrder = $this->orderService->fetchLatestOrder($user);
         return response()->json($latestOrder);
     }
 }

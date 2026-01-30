@@ -28,11 +28,14 @@ class RegisterController extends Controller
 
         $user = $this->userService->registerUser($data['email'], $data['password'], $data['name'], $data['lastName'], $data['tel']);
 
-        Auth::login($user);
+        
+        $token = $user->createToken('sanctum')->plainTextToken;
+        
         $request->session()->regenerate();
         return response()->json([
             "message" => "conta criada com sucesso",
             'user' => $user,
+            'token'=> $token
         ], Response::HTTP_CREATED);
     }
 }

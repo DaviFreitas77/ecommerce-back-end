@@ -12,15 +12,13 @@ use Illuminate\Support\Facades\Auth;
 class LogoutController extends Controller
 {
     /**
-     * Logout usuário (Sanctum SPA)
+     * Logout usuário 
 
      */
     public function __invoke(Request $request)
     {
-         Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+         
+        $request->user()->currentAccessToken()->delete();
           return response()->json(['
           "message" => "Logout efetuado com sucesso",
           '], Response::HTTP_OK);

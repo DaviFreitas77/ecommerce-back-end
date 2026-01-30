@@ -4,7 +4,7 @@ use App\Http\Controllers\MercadoPago\ProccessPaymentCard;
 use App\Http\Controllers\MercadoPago\ProccessPaymentPix;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('mcp')->group(function(){
+Route::middleware('auth:sanctum')->prefix('mcp')->group(function(){
   Route::post('/createPreference',CreatePreferenceController::class);
   Route::post('/proccessPaymentCard',ProccessPaymentCard::class);
   Route::post('/proccessPaymentPix',ProccessPaymentPix::class);

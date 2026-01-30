@@ -3,9 +3,8 @@
 namespace App\Http\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Symfony\Component\HttpFoundation\Response;
+
 
 class UserService
 {
@@ -27,9 +26,9 @@ class UserService
 
 
 
-  public function updateUser(array $data)
+  public function updateUser(array $data,User $user)
   {
-    $idUser = Auth::id();
+    $idUser = $user['id'];
     $user = User::find($idUser);
 
 

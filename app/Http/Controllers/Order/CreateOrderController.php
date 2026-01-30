@@ -37,7 +37,7 @@ class CreateOrderController extends Controller
         if (empty($adressId) || !is_numeric($adressId)) {
             $adressId = null;
         }
-        $userId = Auth::user()->id;
+        $userId = $request->user()->id;
 
         //cria um novo pedido
         $sumPrice = $this->productService->fethPricesProduct($data['items']);

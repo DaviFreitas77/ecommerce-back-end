@@ -5,7 +5,7 @@ use App\Http\Controllers\Order\LatestOrderUserController;
 use App\Http\Controllers\Order\ListOrderUserController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('order')->group(function () {
+Route::middleware('auth:sanctum')->prefix('order')->group(function () {
   Route::post('/create', CreateOrderController::class);
   Route::get('/listOrderUser', ListOrderUserController::class);
   Route::get('/latestOrder',LatestOrderUserController::class);

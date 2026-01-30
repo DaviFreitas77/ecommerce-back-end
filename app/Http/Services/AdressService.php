@@ -3,20 +3,23 @@
 namespace App\Http\Services;
 
 use App\Models\Logradouro;
+use App\Models\User;
 use ErrorException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
+
 class AdressService
 {
 
 
-  public function createLogradouro(array $data)
+  public function createLogradouro(array $data,User $user)
   {
     try {
-      $idUser = Auth::user()->id;
+      $idUser = $user['id'];
+      
 
       $logradouro = new logradouro;
       $logradouro->type = $data['street'];
@@ -35,9 +38,9 @@ class AdressService
   }
 
 
-  public function adressByUser()
+  public function adressByUser(User $user)
   {
-    $idUser = Auth::user()->id;
+    $idUser = $user['id'];
 
     $adressUser = Logradouro::where('fk_user', $idUser)->get();
 

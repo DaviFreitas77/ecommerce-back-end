@@ -29,7 +29,7 @@ class SyncCartController extends Controller
                 'total' => 0
             ]);
         }
-        $idUser = Auth::user()->id;
+        $idUser = $request->user()->id;
         $shoppingCart = ShoppingCart::where('fkUser', $idUser)->first();
 
         // Apaga os itens antigos

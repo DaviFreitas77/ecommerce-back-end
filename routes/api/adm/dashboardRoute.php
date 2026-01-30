@@ -12,17 +12,17 @@ use Illuminate\Support\Facades\Route;
 
 
 //metrics
-Route::middleware('is_admin')->prefix('metrics')->group(function () {
+Route::middleware(['auth:sanctum','is_admin'])->prefix('metrics')->group(function () {
   Route::get('/listMetrics', MetricOrdersController::class);
   Route::get('/billing', billingController::class);
 });
 
-Route::middleware('is_admin')->prefix('order')->group(function () {
+Route::middleware(['auth:sanctum','is_admin'])->prefix('order')->group(function () {
   Route::get('/allOrders', listAllOrdersController::class);
 });
 
 
-Route::middleware('is_admin')->prefix('prod')->group(function () {
+Route::middleware(['auth:sanctum','is_admin'])->prefix('prod')->group(function () {
   Route::delete('delProduct/{id}', DeleteProductController::class);
   Route::post('/registerProduct', CreateProductController::class);
   Route::patch('/editProduct',EditProductController::class);

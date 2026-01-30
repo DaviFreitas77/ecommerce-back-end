@@ -22,7 +22,8 @@ class UseCupomController extends Controller
     public function __invoke(UseCupomRequest $request)
     {
         $data = $request->validated();
+        $user = $request->user();
 
-        return $this->cupomService->useCupom($data);
+        return $this->cupomService->useCupom($data,$user);
     }
 }

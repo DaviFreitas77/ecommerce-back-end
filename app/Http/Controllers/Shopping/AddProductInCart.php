@@ -28,7 +28,7 @@ class AddProductInCart extends Controller
     {
 
         $data = $request->validated();
-        $idUser = Auth::user()->id;
+        $idUser = $request->user()->id;
 
         //verifica se o carrinho ja existe e retorta id,se não,cria um e retorna o id 
         $cartId = $this->shoppingCartService->createShoppingCart($idUser);
