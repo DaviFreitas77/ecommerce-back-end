@@ -7,7 +7,7 @@ use App\Models\Product;
 use App\Models\ProductColor;
 use App\Models\ProductSize;
 use Illuminate\Support\Collection;
-
+use Illuminate\Support\Facades\Log;
 
 class ProductService
 {
@@ -129,6 +129,7 @@ class ProductService
         $products = Product::with(['category'])->get();
 
         $result = $products->map(function ($product) {
+        
             return [
                 "id" => $product->id,
                 "name" => $product->name,
@@ -139,6 +140,7 @@ class ProductService
                 "image" => $product->images->pluck('image'),
                 'sizes' => $product->sizes->pluck('name'),
                 'color' => $product->colors->pluck('name'),
+                'idSubcategory' => $product->fkSubcategory,
             ];
         });
 
@@ -146,14 +148,14 @@ class ProductService
         return response()->json($result);
     }
 
-  
+
     public function searchProduct($search)
     {
         $products = Product::where('name', 'like', '%' . $search . '%')
             ->orWhereHas('category', function ($query) use ($search) {
                 $query->where('name', 'like', '%' . $search . '%');
             })
-            ->with(['category', 'sizes', 'images'])->get();
+            ->with(['category', 'sizes', 'images', 'category.subCategories'])->get();
 
         $result = $products->map(function ($product) {
             return [
@@ -162,10 +164,16 @@ class ProductService
                 "price" => $product->price,
                 "lastPrice" => $product->lastPrice,
                 'description' => $product->description,
-                "category" => $product->category,
+                "category" => [
+                    "id" => $product->category->id,
+                    "name" => $product->category->name,
+
+                ],
                 "image" => $product->images->pluck('image'),
                 "sizes" => $product->sizes->pluck('name'),
                 "color" => $product->colors->pluck('name'),
+                 'idSubcategory' => $product->fkSubcategory,
+
             ];
         });
 

@@ -9,7 +9,7 @@ class Product extends Model
 {
     use HasFactory;
     protected $table = 'products';
-    protected $fillable = ["name", "description", "price", "lastPrice", "fkCategory",];
+    protected $fillable = ["name", "description", "price", "lastPrice", "fkCategory","fkSubcategory"];
     public $timestamps = false;
 
 
@@ -21,6 +21,9 @@ class Product extends Model
     {
         return $this->hasMany(ImagesProduct::class, 'idProduct');
     }
+
+   
+    
 
     public function sizes()
     {

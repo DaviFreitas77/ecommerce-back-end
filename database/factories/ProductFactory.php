@@ -24,6 +24,8 @@ class ProductFactory extends Factory
             'price' => $this->faker->randomFloat(2, 10, 200), // Preço entre 10 e 200
             'lastPrice' => $this->faker->randomFloat(2, 50, 300), // Último preço
             'fkCategory' => \App\Models\Category::inRandomOrder()->first()->id ?? null, // Categoria aleatória existente
+
+            'fkSubcategory' => \App\Models\SubCategory::inRandomOrder()->first()->id , // Subcategoria aleatória existente
         ];
     }
 }

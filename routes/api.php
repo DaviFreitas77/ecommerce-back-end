@@ -24,7 +24,9 @@ require __DIR__ . '/api/mercadoPago.php';
 require __DIR__ . '/api/product.php';
 require __DIR__ . '/api/size.php';
 require __DIR__ . '/api/shoppingCart.php';
+require __DIR__ . '/api/subCategory.php';
 require __DIR__ . '/api/adm/dashboardRoute.php';
+
 
 
 
