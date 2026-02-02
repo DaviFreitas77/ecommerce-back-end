@@ -9,7 +9,7 @@ use App\Http\Controllers\Product\SearchProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('prod')->group(function(){
-Route::get('/productsByCategory/{id}',ListProductByCategoryController::class);
+Route::get('/productsByCategory/{name}',ListProductByCategoryController::class);
 
   Route::get('/products',ListProductController::class);
   Route::get('/product/{id}',ListProductByIdController::class);

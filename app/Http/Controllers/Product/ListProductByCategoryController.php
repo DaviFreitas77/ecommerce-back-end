@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Services\ProductService;
+use App\Models\Category;
 use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Response;
-
+use Illuminate\Support\Facades\Log;
 
 #[Group('Product')]
 class ListProductByCategoryController extends Controller
@@ -19,8 +20,11 @@ class ListProductByCategoryController extends Controller
         $this->productService = $productService;
     }
 
-    public function __invoke($id)
+    public function __invoke($name)
     {
+
+        $id = Category::where('name', $name)->first()->id;
+
         $products = $this->productService->getProductByCategory($id);
 
         if ($products->isEmpty()) {

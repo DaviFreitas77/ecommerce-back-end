@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Filter\filterSubCategoryController;
 use App\Http\Controllers\Upload\UploadController;
 use App\Http\Controllers\User\RegisterNewLetterController;
 use App\Mail\MailOrderCreated;
@@ -48,3 +49,7 @@ Route::prefix('user')->group(function () {
 })->middleware('auth:sanctum');
 
 Route::post('/upload-image', UploadController::class);
+
+Route::prefix('filter')->group(function(){
+  Route::get('/filterSubCategory/{nameSubCategory}',filterSubCategoryController::class);
+});

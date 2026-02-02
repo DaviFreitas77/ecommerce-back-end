@@ -60,6 +60,7 @@ class ProductService
                 'sizes' => $product->sizes->pluck('name'),
                 'color' => $product->colors->pluck('name'),
                 "image" => $product->images->pluck('image'),
+
             ];
         });
 
@@ -152,9 +153,6 @@ class ProductService
     public function searchProduct($search)
     {
         $products = Product::where('name', 'like', '%' . $search . '%')
-            ->orWhereHas('category', function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
-            })
             ->with(['category', 'sizes', 'images', 'category.subCategories'])->get();
 
         $result = $products->map(function ($product) {
