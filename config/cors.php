@@ -15,20 +15,20 @@ return [
     |
     */
 
-    'paths' => ['api/*','auth/*'],
+    'paths' => ['api/*'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('SANCTUM_FRONTEND_URL')],
+    'allowed_origins' => ['http://localhost:517'], 
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => ['*'], 
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
+    'supports_credentials' => false,
 
 ];
