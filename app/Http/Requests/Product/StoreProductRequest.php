@@ -26,6 +26,7 @@ class StoreProductRequest extends FormRequest
             'price' => 'required|numeric',
             'description' => 'required|string',
             'idCategory' => 'required|integer',
+            'idSubcategory' => 'required|integer',
             'lastPrice' => 'nullable|numeric',
             'images' => 'required|array',
             'colors' => 'required|array',
@@ -50,6 +51,9 @@ class StoreProductRequest extends FormRequest
             
             "idCategory.required"=> "A categoria é obrigatória",
             "idCategory.integer"=> "A categoria deve ser um número inteiro",
+
+            "idSubcategory.required"=> "A subcategoria é obrigatória",
+            "idSubcategory.integer"=> "A subcategoria deve ser um número inteiro",
             
 
             "images.required"=> "As imagens são obrigatórias",

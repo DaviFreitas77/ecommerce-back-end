@@ -20,6 +20,7 @@ class ProductService
         $product->price = $products['price'];
         $product->lastPrice = $products['lastPrice'] ?? null;
         $product->fkCategory = $products['idCategory'];
+        $product->fkSubcategory = $products['idSubcategory'];
         $product->save();
 
         foreach ($products['images'] as $images) {
